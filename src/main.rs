@@ -25,6 +25,11 @@ fn main() {
 	for jour in 1..13{
 	println!("On the {} of Christmas my love sent to me", day_nth[jour - 1]);
 	println!("{} {}", numbers[jour - 1], cadeaux[jour - 1] );
+	if (jour - 1) >= 1{
+		for repetition in (0..jour - 1).rev(){
+		// println!("{:?}", jour);
+		println!("{} {}", numbers[repetition], cadeaux[repetition]);
+	}}
 }
 }
 
