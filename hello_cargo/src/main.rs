@@ -1,37 +1,147 @@
-fn main() {
-	let day_nth = [ 
-	"first", "second", "third",
-	"fourth", "fifth", "sixth",
-	"seventh", "eighth", "ninth",
-	"tenth", "eleventh", "twelth"];
+// fn main() {
+// 	// let prenom = String::from("Antony Manon");
+// 	let prenom = "Antony Manon";
 
-	let numbers = [
-	"One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"];
+// 	let antony = &prenom[..6];
+// 	let manon = &prenom[7..];
 
-	let cadeaux = [
-	"partridge in a pear-tree",
-	"Turtle doves",
-	"French hens",
-	"colly birds",
-	"gold rings",
-	"geese a laying",
-	"swans a swimming",
-	"maids a milking",
-	"drummers drumming",
-	"pipers piping",
-	"ladies dancing",
-	"lords a leaping"];
+// 	println!("{} et {}", antony, manon);
 
-	for jour in 1..13{
-	println!("On the {} of Christmas my love sent to me", day_nth[jour - 1]);
-	println!("{} {}", numbers[jour - 1], cadeaux[jour - 1] );
-	if (jour - 1) >= 1{
-		for repetition in (0..jour - 1).rev(){
-		// println!("{:?}", jour);
-		println!("{} {}", numbers[repetition], cadeaux[repetition]);
-	}}
-}
-}
+// 	println!("Le premier mot de la phrase est {}", first_word(&prenom));
+// }
+
+// fn first_word(some_string: &str) -> &str {
+// 	let tableau = some_string.as_bytes();
+
+// 	for (i, &element) in tableau.iter().enumerate() {
+// 		if element == b' '{
+// 			return &some_string[..i]
+// 		}
+// 	}
+// 	&some_string[..]
+// }
+
+// fn main() {
+// 	let some_string = no_dangle();
+// 	println!("{}", some_string);
+// }
+
+// fn no_dangle() -> String {
+// 	let s = String::from("Hello");
+// 	s
+// }
+
+
+// fn main(){
+// 	let mut mot = String::from("Hello");
+// 	complete_mot(&mut mot);
+// 	println!("{}", mot);
+// }
+
+// fn complete_mot(some_string: &mut String) {
+// 	some_string.push_str(", world !");
+// }
+
+// fn main() {
+// 	let s = String::from("Hello");
+// 	let lenght = return_lenght(&s);
+// 	println!("{:?} a une longueur de {}.", s, lenght);
+// }
+
+// fn return_lenght(some_string: &String) -> usize {
+// 	let lenght: usize = some_string.len();
+// 	lenght
+// }
+
+
+// fn main() {
+// 	let s1 = String::from("Hello");
+
+// 	let (s2, len) = calculate_length(s1);
+// 	println!("String {:?} is {} characters long.", s2, len);
+// }
+
+// fn calculate_length(s: String) -> (String, usize) {
+// 	let lenght = s.len();
+// 	(s, lenght)
+// }
+
+// fn main() {
+// 	let s1 = gives_ownership();
+
+// 	let s2 = String::from("Hello");
+
+// 	let s3 = takes_and_gives_back(s2);
+// }
+
+// fn gives_ownership() -> String {
+// 	let some_string = String::from("Hello");
+// 	some_string
+// }
+
+// fn takes_and_gives_back(some_string: String) -> String {
+// 	some_string
+// }
+
+// fn main() {
+	
+
+// 	let ms = String::from("Je suis mutable.");
+	
+// 	let x = 5;
+
+// 	println!("x est toujours valable est vaut {:?}", x);
+
+
+
+// 	takes_ownership(ms);
+
+
+// 	makes_copy(x);
+// }
+
+// fn takes_ownership(some_string: String) {
+// 	println!("{}", some_string);
+// }
+
+// fn makes_copy(some_integer: i32) {
+// 	println!("{}", some_integer);
+// }
+
+// fn main() {
+// 	let day_nth = [ 
+// 	"first", "second", "third",
+// 	"fourth", "fifth", "sixth",
+// 	"seventh", "eighth", "ninth",
+// 	"tenth", "eleventh", "twelth"];
+
+// 	let numbers = [
+// 	"One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve"];
+
+// 	let cadeaux = [
+// 	"partridge in a pear-tree",
+// 	"Turtle doves",
+// 	"French hens",
+// 	"colly birds",
+// 	"gold rings",
+// 	"geese a laying",
+// 	"swans a swimming",
+// 	"maids a milking",
+// 	"drummers drumming",
+// 	"pipers piping",
+// 	"ladies dancing",
+// 	"lords a leaping"];
+
+// 	for jour in 1..13{
+// 	println!("On the {} of Christmas my love sent to me", day_nth[jour - 1]);
+// 	println!("{} {}", numbers[jour - 1], cadeaux[jour - 1] );
+// 	if (jour - 1) >= 1{
+// 		for repetition in (0..jour - 1).rev(){
+// 		// println!("{:?}", jour);
+// 		println!("{} {}", numbers[repetition], cadeaux[repetition]);
+// 	}}
+// }
+// }
 
 
 // fn main(){
