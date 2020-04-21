@@ -1,3 +1,162 @@
+// struct Tel(u8, u8, u8, u8, u8);
+
+// fn main() {
+// 	loop{
+// 	println!("Entrez votre numéro de téléphone.");
+// 	let mut user_input = String::new();
+// 	std::io::stdin().read_line(&mut user_input)
+// 	.expect("Problème mémoire.");
+// 	// let numero_telephone: u32 = match user_input.trim().parse() {
+// 	// 	Ok(num) => num,
+// 	// 	Err(_) => continue,
+// 	// };
+// 	let mon_numero = build_tel(&user_input);
+// 	// println!("{:?}", mon_numero.0);
+// 	// for el in mon_numero.iter(){
+// 	// 	println!("{:?}", el);
+// 	// }
+// 	display_telephone(&mon_numero);
+// }
+// }
+// fn build_tel(numero: &str) -> Tel {
+// 	let un_deux: u8 = match numero[..2].parse(){
+// 		Ok(num) => num,
+// 		Err(_) => panic!(),
+// 	};
+// 	let trois_quatre: u8 = match numero[2..4].parse(){
+// 		Ok(num) => num,
+// 		Err(_) => panic!(),
+// 	};
+// 	let cinq_six: u8 = match  numero[4..6].parse(){
+// 		Ok(num) => num,
+// 		Err(_) => panic!(),
+// 	};
+// 	let sept_huit: u8 = match numero[6..8].parse(){
+// 		Ok(num) => num,
+// 		Err(_) => panic!(),
+// 	};
+// 	let neuf_dix: u8 = match numero[8..10].parse(){
+// 		Ok(num) => num,
+// 		Err(_) => panic!(),
+// 	};
+// 	Tel(un_deux, trois_quatre, cinq_six, sept_huit, neuf_dix)
+// }
+
+// fn display_telephone(numero: &Tel) {
+// 	println!("{}.{}.{}.{}.{}", numero.0, numero.1, numero.2, numero.3, numero.4);
+// }
+
+// 	struct User {
+// 		nom: String,
+// 		prenom: String,
+// 		adresse: String,
+// 		courriel: String,
+// 		telephone: String,
+// 	}
+
+// fn main() {
+// 	let user1 = build_user(String::from("Merle"), String::from("Antony"), 
+// 		String::from("8 allée de la corderie"), String::from("anto@anto"), 
+// 			String::from("06 84 25 99 61"));
+// 	display_user(&user1);
+
+// 	let user2 = User {
+// 		prenom: String::from("Manon"),
+// 		telephone: String::from("06 69 28 20 81"),
+// 		..user1
+// 	};
+// 	println!();
+// 	display_user(&user2);
+// }
+
+// fn build_user(nom: String, prenom: String, adresse: String, courriel: String, telephone: String) -> User {
+// 	User{
+// 	nom,
+// 	prenom,
+// 	adresse,
+// 	courriel,
+// 	telephone,
+// }
+// }
+
+// fn display_user(fiche: &User) {
+// 	println!("{}", fiche.nom);
+// 	println!("{}", fiche.prenom);
+// 	println!("{}", fiche.adresse);
+// 	println!("{}", fiche.courriel);
+// 	println!("{}", fiche.telephone);
+// }
+
+// fn main() {
+
+// 	const LIGNES: usize = 9;
+// 	const COLS: usize = 6;
+
+// 	let heart: [[char; COLS]; LIGNES] = [
+// 		['.', '.', '.', '.', '.', '.'],
+//         ['.', 'O', 'O', '.', '.', '.'],
+//         ['O', 'O', 'O', 'O', '.', '.'],
+//         ['O', 'O', 'O', 'O', 'O', '.'],
+//         ['.', 'O', 'O', 'O', 'O', 'O'],
+//         ['O', 'O', 'O', 'O', 'O', '.'],
+//         ['O', 'O', 'O', 'O', '.', '.'],
+//         ['.', 'O', 'O', '.', '.', '.'],
+//         ['.', '.', '.', '.', '.', '.'],
+//         ];
+
+//     for i in 0..COLS{
+//     	for j in 0..LIGNES{
+//     		print!("{}", heart[j][i]);
+//     	}
+//     	println!();
+//     }
+// }
+
+
+
+
+
+// fn main(){
+// 	let string_literal: &str = "Bonjour tout le monde !";
+
+// 	println!("{}", &string_literal[8..string_literal.len()]);
+// }
+
+
+// use std::io;
+
+// fn main() {
+	// loop{
+	// 	println!("Entrez le premier nombre la séquence de Collatz");
+	// 	let mut user_input = String::new();
+	// 	io::stdin().read_line(&mut user_input)
+	// 	.expect("Problème mémoire.");
+	// 	let chiffre: u32 = match user_input.trim().parse() {
+	// 		Ok(num) => num,
+	// 		Err(_) => continue,
+	// 	};
+// 		collatz(chiffre);
+// 		break;
+// 	}
+	
+// }
+
+// fn collatz(nombre: u32) -> u32{
+// 	if nombre == 1 {
+// 		return 1
+// 	}
+// 	else if nombre % 2 != 0 {
+// 		// println!("Impair");
+// 		println!("{}", (3 * nombre) + 1);
+// 		return collatz((3 * nombre)  +1)
+// 	}
+// 	else {
+// 		// println!("pair");
+// 		println!("{}", nombre / 2);
+// 		return collatz(nombre / 2)
+// 	}
+// }
+
 // fn main() {
 // 	// let prenom = String::from("Antony Manon");
 // 	let prenom = "Antony Manon";

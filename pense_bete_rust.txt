@@ -1,0 +1,89 @@
+﻿// [USER INPUT]
+	loop{
+		println!("Entrez le premier nombre la séquence de Collatz");
+		let mut user_input = String::new();
+		io::stdin().read_line(&mut user_input)
+		.expect("Problème mémoire.");
+		let chiffre: u32 = match user_input.trim().parse() {
+			Ok(num) => num,
+			Err(_) => continue,
+		};
+
+
+// [MULTIDIMENSIONNAL ARRAYS]
+for (i, row) in my_int_matrix.iter().enumerate() {
+    for (j, col) in row.iter().enumerate() {
+        println!("[row={}][col={}]={}", i, j, col);
+    }
+}
+
+const LIGNES: usize = 9;
+	const COLS: usize = 6;
+
+	let heart: [[char; COLS]; LIGNES] = [
+		['.', '.', '.', '.', '.', '.'],
+        ['.', 'O', 'O', '.', '.', '.'],
+        ['O', 'O', 'O', 'O', '.', '.'],
+        ['O', 'O', 'O', 'O', 'O', '.'],
+        ['.', 'O', 'O', 'O', 'O', 'O'],
+        ['O', 'O', 'O', 'O', 'O', '.'],
+        ['O', 'O', 'O', 'O', '.', '.'],
+        ['.', 'O', 'O', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.'],
+        ];
+
+    for i in 0..COLS{
+    	for j in 0..LIGNES{
+    		print!("{}", heart[j][i]);
+    	}
+    	println!();
+    }
+
+
+// STRUCTS & TUPLES STRUCTS
+
+* On ne peut pas faire d'itération sur des structs ou tuples, car leurs éléments ont des tailles différentes.
+
+
+    struct User {
+        nom: String,
+        prenom: String,
+        adresse: String,
+        courriel: String,
+        telephone: String,
+    }
+
+fn main() {
+    let user1 = build_user(String::from("Merle"), String::from("Antony"), 
+        String::from("8 allée de la corderie"), String::from("anto@anto"), 
+            String::from("06 84 25 99 61"));
+    display_user(&user1);
+
+    let user2 = User {
+        prenom: String::from("Manon"),
+        telephone: String::from("06 69 28 20 81"),
+        ..user1
+    };
+    println!();
+    display_user(&user2);
+}
+
+fn build_user(nom: String, prenom: String, adresse: String, courriel: String, telephone: String) -> User {
+    User{
+    nom,
+    prenom,
+    adresse,
+    courriel,
+    telephone,
+}
+}
+
+fn display_user(fiche: &User) {
+    println!("{}", fiche.nom);
+    println!("{}", fiche.prenom);
+    println!("{}", fiche.adresse);
+    println!("{}", fiche.courriel);
+    println!("{}", fiche.telephone);
+}
+
+
