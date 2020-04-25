@@ -1,3 +1,136 @@
+fn main() {
+	let some_u8_value = Some(4u8);
+
+	if let Some(4) = some_u8_value {
+		println!("quatre");
+	}
+
+// match some_u8_value {
+//     1 => println!("one"),
+//     3 => println!("three"),
+//     5 => println!("five"),
+//     7 => println!("seven"),
+//     _ => (),
+// }
+}
+
+// fn main() {
+
+// 	println!("Résultat : {}", unwrap_dividend(10, 2));
+
+// 	// let a = Some(5);
+// 	// let b: Option<i32> = None;
+// 	// println!("{:?}", plus_one(a));
+// 	// println!("{:?}", plus_one(b));
+// }
+
+// fn plus_one(x: Option<i32>) -> i32 {
+// 	match x {
+// 		Some(i) => i,
+// 		None => 0,
+// 	}
+// }
+
+// fn safe_division(dividend: i32, divisor: i32) -> Option<i32> {
+// 	if divisor == 0 {
+// 		None
+// 	}
+// 	else {
+// 		Some(dividend / divisor)
+// 	}
+// }
+
+// fn unwrap_dividend(dividend: i32, divisor: i32) -> i32 {
+// 	match safe_division(dividend, divisor) {
+// 		Some(quotient) => quotient,
+// 		None => 0,
+// 	}
+// }
+
+// #[derive(Debug)]
+// #[allow(dead_code)]
+
+// enum PaysUe {
+// 	France,
+// 	Allemagne,
+// 	Italie,
+// 	Espagne,
+// 	Portugal,
+// 	PaysBas,
+// 	Luxembourg,
+// 	Autriche,
+
+// }
+
+// #[allow(dead_code)]
+// enum Pieces {
+// 	Cent1,
+// 	Cent2,
+// 	Cent5,
+// 	Cent10,
+// 	Cent20,
+// 	Cent50,
+// 	Euro1,
+// 	Euros2(PaysUe),
+// }
+
+
+// fn main() {
+// 	println!("{}", coin_values(Pieces::Euros2(PaysUe::France)));
+// }
+
+// fn coin_values (piece: Pieces) -> u8 {
+// 	match piece {
+// 		Pieces::Cent1 => 1,
+// 		Pieces::Cent2 => 2,
+// 		Pieces::Cent5 => 5,
+// 		Pieces::Cent10 => 10,
+// 		Pieces::Cent20 => 20,
+// 		Pieces::Cent50 => 50,
+// 		Pieces::Euro1 => 100,
+// 		Pieces::Euros2(PaysUe::France) => { 
+// 			println!("Cocorico");
+// 			200},
+// 		Pieces::Euros2(_) => 200,
+// }
+// 	}
+
+// 	let some_number = Some(5);
+// 	let some_string = Some("a string");
+
+// 	let absent_number: Option<i32> = None;
+// }
+
+
+
+// #[derive(Debug)]
+// enum IpAdrr {
+// 	V4(u8,u8,u8,u8),
+// 	V6(String),
+// }
+
+// impl IpAdrr {
+
+// 	fn rec_ip_v4(ip1: u8, ip2: u8, ip3: u8, ip4: u8) -> IpAdrr {
+// 		IpAdrr::V4(ip1, ip2, ip3, ip4)
+// 	}
+
+// 	fn prnt_ip(&self) {
+// 		println!("{:?}", self);
+// 	}
+
+// }
+
+// fn main() {
+// 	let t430 = IpAdrr::V4(192,168,1,12);
+
+// 	println!("t430 : {:?}", t430.prnt_ip());
+
+// 	let lain = IpAdrr::rec_ip_v4(192,168,1,17);
+
+// 	println!("lain : {:?}", lain.prnt_ip());
+// }
+
 // struct Tel(u8, u8, u8, u8, u8);
 
 // fn main() {
