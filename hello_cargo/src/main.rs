@@ -1,9 +1,291 @@
-fn main() {
-	let some_u8_value = Some(4u8);
+// Exercices chapitre 8
 
-	if let Some(4) = some_u8_value {
-		println!("quatre");
+fn main() {
+	let voyelles: [char; 12] = ['A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u', 'Y', 'y'];
+
+	let mut i: u8 = 5;
+	while i > 0 {
+		let mut user_input = String::new();
+		std::io::stdin().read_line(&mut user_input).expect("Problème de mémoire.");
+		println!("{}", pig_latin(&mut user_input, &voyelles));
+		i -= 1;
 	}
+	}
+
+// --------------------------------------------------------------
+
+fn pig_latin(mot: &String, voyelles: &[char]) -> String {
+	if tri(&mot, &voyelles) {
+		voyelle_pig_latin(&mot)
+	} else {
+		consonne_pig_latin(&mot)
+	}
+}
+
+// --------------------------------------------------------------
+
+fn tri(mot: &String, voyelles: &[char]) -> bool {
+	for c in mot[0..1].chars(){
+		for voyelle in voyelles{
+			if c == *voyelle{
+				return true
+			}
+		}
+	}
+	false
+}
+
+// --------------------------------------------------------------
+
+fn consonne_pig_latin(mot: &String) -> String {
+	let mut c: char = ' ';
+	for lettre in mot.chars() {
+		c = lettre;
+		break;
+	}
+	let mot_incomplet = &mot[1..].trim();
+	let mut mot_complet: String = mot_incomplet.to_string();
+	mot_complet.push('-');
+	mot_complet.push(c);
+	let suffixe: &str = "ay";
+	mot_complet.push_str(suffixe);
+	mot_complet
+}
+
+// --------------------------------------------------------------
+
+fn voyelle_pig_latin(mot: &String) -> String {
+	let suffixe: &str = "-way";
+	let mut mot_final: String = mot.trim().to_string();
+	mot_final.push_str(suffixe);
+	mot_final
+}
+
+
+// Exercice 1
+// use std::collections::HashMap;
+
+// fn main() {
+// 	let notes = vec![12, 15, 17, 17, 8, 6, 14, 16, 10, 9, 4 ,4, 4];
+// 	let mut somme: u8 = 0;
+
+// 	for note in &notes {
+// 		somme += note;
+// 	}
+
+// 	let mut notes2 = notes;
+
+// 	notes2.sort();
+
+
+// 	let mut mode = HashMap::new();
+
+// 	for el in &notes2 {
+// 		let count = mode.entry(el).or_insert(0);
+// 		*count += 1;
+// 	}
+
+// 	let mut max: u8 = 0;
+// 	let mut cle: u8 = 0;
+
+// 	for (key, value) in mode {
+// 		if value > max {
+// 			max = value;
+// 			cle = *key;
+// 		}
+// 	}
+
+// 	println!("{:?}", notes2);
+// 	println!("La valeur médiane est :{:?}", notes2[notes2.len()/2]);
+// 	println!("La valeur mode est : {:?}", cle);
+
+	
+
+	// let moyenne: f64 = somme * 1.0 / taille;
+	// println!("{}", somme as f64 / notes.len() as f64);
+// }
+
+
+// use std::collections::HashMap;
+
+// fn main() {
+
+
+// 	let phrase = String::from("Hello world wonderful world");
+
+// 	let mut count_word_map = HashMap::new();
+
+// 	for mot in phrase.split_whitespace() {
+// 		let compte = count_word_map.entry(mot).or_insert(0);
+// 		*compte += 1;
+// 	}
+
+// 	println!("{:?}", count_word_map);
+
+	// let mut map = HashMap::new();
+
+	// map.insert(String::from("Bleus"), 20);
+
+	// map.entry(String::from("Bleus")).or_insert(10);
+	// map.entry(String::from("Jaunes")).or_insert(50);
+
+	// for (key, value) in map {
+	// 	println!("{}: {}", key, value);
+	// }
+
+	// let equipes = vec![String::from("Bleus"), String::from("Jaunes")];
+	// let scores = vec![10, 50];
+
+	// let map: HashMap<_, _> = equipes.iter().zip(scores.iter()).collect();
+
+
+	// let mut scores = HashMap::new();
+	// scores.insert(String::from("Bleus"), 10);
+	// scores.insert(String::from("Jaunes"), 50);
+
+
+	// for (key, value) in &scores {
+	// 	println!("{}: {}", key, value);
+	// }
+
+	// let equipe = String::from("Bleus");
+	// let score = scores.get(&equipe);
+
+	// println!("L'équipe \"Les {}\" a {} points", equipe, score.unwrap());
+
+// }
+
+// fn main() {
+
+// 	let mut mot = String::from("Antony");
+// 	let manon: [char;5] = ['M', 'a', 'n', 'o', 'n'];
+
+// 	println!("Mot avant : {}", mot);
+
+// 	for lettre in &manon {
+// 		mot.push(*lettre);
+// 	}
+
+// 	println!("Mot après : {} ", mot);
+
+// 	let s2 = " et Basile";
+// 	let s3 = mot + &s2;
+
+// 	println!("{}", s3);
+
+// 	let mut s4 = String::from("Pipé le loir");
+
+// 	let l = s4.len();
+
+// 	let s5 = &s4[0..l];
+// 	println!("{}", s5);
+
+// 	let finalement = format!("{} {} {} {}", s2, s3, s4, s5);
+// 	println!("{}", finalement);
+
+// 	let mut vecteur = Vec::new();
+
+// 	vecteur.push(10);
+// 	vecteur.push(15);
+// 	vecteur.pop();
+
+// 	for i in vecteur{
+// 		println!("{}", i);
+// 	}
+
+	// let mut s1 = String::from("foo");
+	// let s2 = "bar";
+
+	// s1.push_str(s2);
+	// println!("s2 est {}", s2);
+// }
+
+// #[derive(Debug)]
+// enum SpreadsheetCell<'lifetime> {
+// 	Int(i32),
+// 	Float(f64),
+// 	Text(&'lifetime str),
+// }
+
+// #[allow(unused_variables)]
+// fn main() {
+// 	let v: Vec<i32> = Vec::new();
+// 	let v2 = vec![1, 2, 3];
+// 	let mut v3 = Vec::new();
+
+// 	v3.push(5);
+// 	v3.push(10);
+// 	v3.push(15);
+// 	v3.push(20);
+
+// let vingt: &i32 = &v3[2];
+
+// let test = match v3.get(3) {
+// 	Some(el) => v3[3] ,
+// 	None => 0,//println!("Il n'y a rien ici."),
+// };
+
+// println!("{}", test);
+
+// let mut vecteur = vec![1,2,3,4,5];
+
+// let first = &vecteur[0];
+
+// vecteur.push(6);
+
+// for i in &mut vecteur{
+// 	*i += 50;
+// 	println!("{}", i);
+// }
+
+
+
+// let vecteur = vec![
+// 	SpreadsheetCell::Int(3),
+// 	SpreadsheetCell::Float(64.8),
+// 	SpreadsheetCell::Text("vert"),
+// ];
+
+// let couleur = vert_ou_non(vecteur);
+
+// println!("C'est {}", couleur);
+
+// }
+
+// fn vert_ou_non (vecteur: Vec<SpreadsheetCell>) -> &str {
+// 	let mut retour: &str = "Il n'y a rien.";
+// 	for i in &vecteur {
+// 	match i {
+// 		SpreadsheetCell::Text("vert") => retour = "vert",
+// 		_ => (),
+// 	};
+// }
+// retour
+// }
+
+// for i in &vecteur {
+// 	match i {
+// 		SpreadsheetCell::Text("vert") => println!("C'est vert !"),
+// 		_ => println!("Rien du tout"),
+// 	}
+// }
+
+// let moi = "Antony";
+
+// println!("{}", &moi[0]);
+// for c in moi.chars(){
+// 	println!("{}", c);
+// }
+
+
+
+
+// fn main() {
+// 	let some_u8_value = Some(4u8);
+
+// 	if let Some(4) = some_u8_value {
+// 		println!("quatre");
+// 	}
 
 // match some_u8_value {
 //     1 => println!("one"),
@@ -12,7 +294,7 @@ fn main() {
 //     7 => println!("seven"),
 //     _ => (),
 // }
-}
+// }
 
 // fn main() {
 

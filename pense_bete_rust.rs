@@ -73,3 +73,39 @@ fn main() {
     println!("Est ce que rect1 peut contenir rect3 ? \t {}", rect1.can_hold(&rect3));
 
     println!("L'aire du rectangle est {} pixels carrés.", rect1.area());
+
+
+    // DEPENDENCIES
+    /* Members of the Rust community have made many packages available at crates.io, 
+    and pulling any of them into your package involves these same steps: listing them 
+    in your package’s Cargo.toml file and using use to bring items into scope. 
+
+    Note that the standard library (std) is also a crate that’s external to our package. 
+    Because the standard library is shipped with the Rust language, we don’t need to 
+    change Cargo.toml to include std. But we do need to refer to it with use to bring 
+    items from there into our package’s scope. For example, with HashMap we would use 
+    this line: */
+
+use std::collections::HashMap;
+// This is an absolute path starting with std, the name of the standard library crate.
+
+// Using Nested Paths to Clean Up Large use Lists
+use std::{cmp::Ordering, io};
+
+use std::io;
+use std::io::Write; /* est égal à */ use std::io::{self, Write};
+
+// The Glob Operator
+use std::collections::*;
+
+
+// VECTORS
+let v = vec![1, 2, 3, 4, 5];
+
+let third: &i32 = &v[2];
+println!("The third element is {}", third);
+
+match v.get(2) {
+    Some(third) => println!("The third element is {}", third),
+    None => println!("There is no third element."),
+}
