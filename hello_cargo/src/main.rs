@@ -1,25 +1,118 @@
-
-enum Classeur {
-	Int(i32),
-	Float(f64),
-	Text(String),
-}
+use std::collections::HashMap;
 
 fn main() {
-	let ligne = vec![
-		Classeur::Int(456),
-		Classeur::Text(String::from("Ventes")),
-		Classeur::Float(987367.78987),
-	];
+	let mut user_input = String::new();
+	std::io::stdin().read_line(&mut user_input)
+	.ok()
+	.expect("Erreur de mémoire");
 
-	for case in &ligne{
-		match case {
-			Classeur::Int(num) => println!("{}", num),
-			Classeur::Float(num) => println!("{}", num),
-			Classeur::Text(mot) => println!("{}", mot),
-		}
+	let mut v: Vec<&str> = vec![];
+	for mot in user_input.split_whitespace() {
+		v.push(mot);
 	}
+
+	let mut hr_registry: HashMap<&str, &str> = HashMap::new();
+	
+	if (v[0] == "Add" || v[0] == "add") && v[2] == "to" {
+		hr_registry.entry(v[1]).or_insert(v[3]);
+	} else {println!("Saisie invalide. Add xxx to dpt.")};
+
+	for (key, value) in hr_registry {
+		println!("{} est affecté au département {} ", key, value);
+	}
+
 }
+// fn main() {
+
+// 	let equipes = vec![String::from("Bleus"), String::from("Verts")];
+// 	let scores = vec![24, 9];
+
+// 	let mut regroup_map: HashMap<_,_> = equipes.into_iter().zip(scores.into_iter()).collect();
+
+// 	regroup_map.insert(String::from("Jaunes"), 13);
+
+// 	let j = String::from("Jaunes");
+// 	let score = regroup_map.get(&j).unwrap();
+
+// 	print!("{}", score);
+
+// 	for (key, value) in &regroup_map {
+// 		println!("{}: {}", key, value);
+// 	}
+// 	println!();
+
+// 	regroup_map.entry(j).or_insert(55);
+// 	regroup_map.entry(String::from("Rouges")).or_insert(17);
+
+// 	for (k,v) in regroup_map {
+// 		println!("{}: {} ", k, v);
+// 	}
+// 	println!();
+
+// 	let texte = "Il était un petit navire, il était un petit navire, qui n'avait jamais jamais navigué ohé ohé !";
+
+// 	let mut compte_mot = HashMap::new();
+
+// 	for word in texte.split_whitespace() {
+// 		let count = compte_mot.entry(word).or_insert(0);
+// 		*count += 1;
+// 	}
+
+// 	for (w,n) in compte_mot {
+// 		println!("{} : {}", w, n);
+// 	}
+
+
+	// let s1 = String::from("Antony ");
+	// let s2 = String::from("Manon ");
+	// let s3 = String::from("et Basile");
+
+	// let s4 = format!("{} {} {}", s1, s2, s3);
+	// println!("{}", s4);
+	// println!("{}", s1);
+
+	// for c in 0..8366 {
+	// 	println!("{}", char::from_u32(c).unwrap()); //(c + b'0') as char)
+	// }
+	// (0..200).for_each(|c| println!("{}", std::char::from_u32(c).unwrap_or(' ')));
+	// for chr in (0..200).filter_map(|c| std::char::from_u32(c + u32::from(b'0'))) {
+	// 	println!("{}", chr);
+	// }
+// }
+
+// fn main() {
+// 	let mut v: Vec<i32> = vec![];
+// 	for x in 0..100 {
+// 		v.push(x);
+// 	}
+// 	for i in &mut v {
+// 		*i = *i * *i;
+// 		println!("[{}]", i);
+// 	}
+// }
+
+
+// enum Classeur {
+// 	Int(i32),
+// 	Float(f64),
+// 	Text(String),
+// }
+
+// fn main() {
+// 	let ligne = vec![
+// 		Classeur::Int(456),
+// 		Classeur::Text(String::from("Ventes")),
+// 		Classeur::Float(987367.78987),
+// 	];
+
+// 	for case in &ligne{
+// 		match case {
+// 			Classeur::Int(num) => println!("{}", num),
+// 			Classeur::Float(num) => println!("{}", num),
+// 			Classeur::Text(mot) => println!("{}", mot),
+// 		}
+// 	}
+// }
 
 // fn main() {
 // 	let d = [ 
