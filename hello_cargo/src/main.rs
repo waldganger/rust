@@ -1,27 +1,69 @@
-use std::collections::HashMap;
-
 fn main() {
-	let mut user_input = String::new();
-	std::io::stdin().read_line(&mut user_input)
-	.ok()
-	.expect("Erreur de mémoire");
-
-	let mut v: Vec<&str> = vec![];
-	for mot in user_input.split_whitespace() {
-		v.push(mot);
+	for i in 1..2{
+		// println!("{}", i);
+		println!("{}", powify(i));
 	}
-
-	let mut hr_registry: HashMap<&str, &str> = HashMap::new();
-	
-	if (v[0] == "Add" || v[0] == "add") && v[2] == "to" {
-		hr_registry.entry(v[1]).or_insert(v[3]);
-	} else {println!("Saisie invalide. Add xxx to dpt.")};
-
-	for (key, value) in hr_registry {
-		println!("{} est affecté au département {} ", key, value);
-	}
-
 }
+
+fn powify(n: u32) -> u32 {
+	let mut sum = 0;
+	let mut c = 0;
+	while sum != 1 {
+		for d in n.to_string().chars(){
+			sum += d.to_digit(10).unwrap().pow(2);
+			println!("{}", sum);
+		}
+		// println!("{}", sum);
+		c += 1;
+		if sum == 1 || c > 10 {
+			return sum;
+		}
+		
+		powify(sum);
+
+	}
+	sum
+}
+
+// fn main() {
+// 	for i in 1..201{
+// 		let mut c=0;
+// 		for j in 1..i{
+// 			if c>i{
+// 				println!("{}", i);
+// 				break;
+// 			}
+// 			if i%j==0{
+// 				c+=j;
+// 			}
+// 		}
+// 	}
+// }
+
+// use std::collections::HashMap;
+
+// fn main() {
+// 	let mut user_input = String::new();
+// 	std::io::stdin().read_line(&mut user_input)
+// 	.ok()
+// 	.expect("Erreur de mémoire");
+
+// 	let mut v: Vec<&str> = vec![];
+// 	for mot in user_input.split_whitespace() {
+// 		v.push(mot);
+// 	}
+
+// 	let mut hr_registry: HashMap<&str, &str> = HashMap::new();
+	
+// 	if (v[0] == "Add" || v[0] == "add") && v[2] == "to" {
+// 		hr_registry.entry(v[1]).or_insert(v[3]);
+// 	} else {println!("Saisie invalide. Add xxx to dpt.")};
+
+// 	for (key, value) in hr_registry {
+// 		println!("{} est affecté au département {} ", key, value);
+// 	}
+
+// }
 // fn main() {
 
 // 	let equipes = vec![String::from("Bleus"), String::from("Verts")];
