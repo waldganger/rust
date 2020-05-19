@@ -3,14 +3,13 @@ fn main() {
 	for i in 1..3{
 		if powify(i, c) == true {
 			println!();
-			println!("{}", i);
+			println!("****{}****", i);
 			println!();
 		}
 	}
 }
 
 fn powify(n: u32, mut c: u32) -> bool {
-	
 	loop {
 		let mut sum = 0;
 		println!("JE DECOMPOSE : {}", n);
@@ -21,17 +20,20 @@ fn powify(n: u32, mut c: u32) -> bool {
 		}
 		// println!("NOMBRE SUIVANT");
 		c += 1; //test de condition sur c en 1er avec defaut sur false
-		if sum == 1 { // au lieu de break, true
+		if c > 10 {
+			println!("*****BREAK*****");
 			break;
-		} 
-		if c < 11 { // test sur somme else
+		}
+		if sum == 1 { // au lieu de break, true
+			println!("*****TRUE*****");
+			return true;
+		} else { // test sur somme else
 			println!("RECURSION {} JE PASSE {} EN ARGUMENT", c, sum);
 			powify(sum, c);
-		} else {
-			return false;
 		}
+		break;
 	}
-	true
+	false
 }
 
 // fn main() {
