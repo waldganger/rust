@@ -1,28 +1,37 @@
 fn main() {
-	for i in 1..2{
-		// println!("{}", i);
-		println!("{}", powify(i));
+	let c = 0;
+	for i in 1..3{
+		if powify(i, c) == true {
+			println!();
+			println!("{}", i);
+			println!();
+		}
 	}
 }
 
-fn powify(n: u32) -> u32 {
-	let mut sum = 0;
-	let mut c = 0;
-	while sum != 1 {
+fn powify(n: u32, mut c: u32) -> bool {
+	
+	loop {
+		let mut sum = 0;
+		println!("JE DECOMPOSE : {}", n);
 		for d in n.to_string().chars(){
+			println!("Je traite {}", d);
 			sum += d.to_digit(10).unwrap().pow(2);
-			println!("{}", sum);
+			println!("sum :{}", sum);
 		}
-		// println!("{}", sum);
-		c += 1;
-		if sum == 1 || c > 10 {
-			return sum;
+		// println!("NOMBRE SUIVANT");
+		c += 1; //test de condition sur c en 1er avec defaut sur false
+		if sum == 1 { // au lieu de break, true
+			break;
+		} 
+		if c < 11 { // test sur somme else
+			println!("RECURSION {} JE PASSE {} EN ARGUMENT", c, sum);
+			powify(sum, c);
+		} else {
+			return false;
 		}
-		
-		powify(sum);
-
 	}
-	sum
+	true
 }
 
 // fn main() {
