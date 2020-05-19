@@ -1,16 +1,19 @@
 fn main() {
-	let c = 0;
-	for i in 1..3{
-		if powify(i, c) == true {
+
+	for i in 18..21{
+		let l = 0;
+		println!("/////// NOUVELLE ITERATION \\\\\\\\");
+		if powify(i, l) == true {
 			println!();
-			println!("****{}****", i);
+			println!("/////// {} \\\\\\\\", i);
 			println!();
 		}
 	}
 }
 
-fn powify(n: u32, mut c: u32) -> bool {
-	loop {
+fn powify(n: u32, l: u32) -> bool {
+	let mut c = l;
+	// loop {
 		let mut sum = 0;
 		println!("JE DECOMPOSE : {}", n);
 		for d in n.to_string().chars(){
@@ -18,22 +21,21 @@ fn powify(n: u32, mut c: u32) -> bool {
 			sum += d.to_digit(10).unwrap().pow(2);
 			println!("sum :{}", sum);
 		}
-		// println!("NOMBRE SUIVANT");
-		c += 1; //test de condition sur c en 1er avec defaut sur false
-		if c > 10 {
-			println!("*****BREAK*****");
-			break;
-		}
+		c += 1; 
 		if sum == 1 { // au lieu de break, true
 			println!("*****TRUE*****");
 			return true;
 		} else { // test sur somme else
+			if c > 10 {
+				println!("*****BREAK*****");
+				return false;
+			} else {
 			println!("RECURSION {} JE PASSE {} EN ARGUMENT", c, sum);
 			powify(sum, c);
+			return false;
+			}
 		}
-		break;
-	}
-	false
+	// }
 }
 
 // fn main() {
