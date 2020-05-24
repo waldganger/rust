@@ -1,34 +1,36 @@
 fn main() {
 	let v = vec![12, 34, 78, 4, 78, 38];
 	let a:[i32;5] = [1, 2, 5, 4, 3];
-	println!("{}", big_num(&v));
-	println!("{}", big_num(&a));
+	println!("{}", generic_largest(&v));
+	println!("{}", generic_largest(&a));
+	// println!("{}", big_num(&v));
+	// println!("{}", big_num(&a));
 	let prenom = ['a', 'n', 't', 'o', 'n'];
-	print!("{}", big_char(&prenom));
+	print!("{}", generic_largest(&prenom));
 	
 }
 
-fn big_num(liste: &[i32]) -> i32 {
-	let mut maximum: i32 = liste[0];
-	for &n in liste {
-		if n > maximum {
-			maximum = n;
-		}
-	}
-	maximum
-}
+// fn big_num(liste: &[i32]) -> i32 {
+// 	let mut maximum: i32 = liste[0];
+// 	for &n in liste {
+// 		if n > maximum {
+// 			maximum = n;
+// 		}
+// 	}
+// 	maximum
+// }
 
-fn big_char(liste: &[char]) -> char {
-	let mut max_char = liste[0];
-	for &c in liste {
-		if c > max_char {
-			max_char = c;
-		}
-	}
-	max_char
-}
+// fn big_char(liste: &[char]) -> char {
+// 	let mut max_char = liste[0];
+// 	for &c in liste {
+// 		if c > max_char {
+// 			max_char = c;
+// 		}
+// 	}
+// 	max_char
+// }
 
-fn generic_largest<T>(liste: &[T]) -> T {
+fn generic_largest<T: PartialOrd + Copy>(liste: &[T]) -> T {
 	let mut largest = liste[0];
 	for &el in liste {
 		if el > largest {
@@ -37,6 +39,230 @@ fn generic_largest<T>(liste: &[T]) -> T {
 	}
 	largest
 }
+
+// use std::env;
+// fn main() {
+// 	let args: Vec<String> = env::args().collect();
+// 	for c in &args[1..]{
+// 		let d = c.parse::<u32>().unwrap();
+// 		println!("{}", romanize(d));
+// 	}
+// }
+
+
+// fn main() {
+// 	loop{
+// 	let mut user_input = String::new();
+// 	std::io::stdin().read_line(&mut user_input).expect("FAILURE");
+
+// 	println!("{}", romanize(user_input.trim().parse().unwrap()));
+// 	}
+// }
+
+// fn romanize(c: u32) -> String {
+// 	let mut result = String::new();
+// 	let mut x = c;
+// 	while x > 0 { // on enlève M par M, D puis, C, puis L, X par X,puis V, puis I par I
+// 		if x >= 1000 {
+// 			result.push('M');
+// 			x -= 1000;
+// 		} else if x >= 900 {
+// 			result.push_str("CM");
+// 			x %= 900;
+// 		}
+// 		else if x >= 500 {
+// 			result.push('D');
+// 			x -= 500;
+// 		} else if x >= 400 {
+// 			result.push_str("CD");
+// 			x %= 400;
+// 		}
+// 		else if x >= 100 {
+// 			result.push('C');
+// 			x -= 100;
+// 		} else if x >= 90 {
+// 			result.push_str("XC");
+// 			x %= 90;
+// 		}
+// 		else if x >= 50 {
+// 			result.push('L');
+// 			x -= 50;
+// 		} else if x > 39 {
+// 			result.push_str("XL");
+// 			x %= 40;
+// 		}
+// 		else if x >= 10 {
+// 			result.push('X');
+// 			x -= 10;
+// 		} else if x > 8 {
+// 			result.push_str("IX");
+// 			x %= 9;
+// 		}
+// 		else if x >= 5 {
+// 			result.push('V');
+// 			x -= 5;
+// 		} else if x > 3 {
+// 			result.push_str("IV");
+// 			x %= 4;
+// 		}
+// 		else {
+// 			result.push('I');
+// 			x -= 1;
+// 		}
+// 	}
+// 	result
+// }
+
+// pub trait Summary {
+// 	fn summarize_author(&self) -> String;
+
+// 	fn summarize(&self) -> String {
+// 		format!("Read more from {}", self.summarize_author())
+// 	}
+// }
+
+// pub struct NewsArticle {
+// 	pub headline: String,
+// 	pub location: String,
+// 	pub author: String,
+// 	pub content: String,
+// }
+
+// pub struct Tweet {
+// 	pub username: String,
+// 	pub content: String,
+// 	pub reply: bool,
+// 	pub retweet: bool,
+// }
+
+// impl Summary for NewsArticle {
+// 	fn summarize(&self) -> String {
+// 		format!("{} by {}. ({})", self.headline, self.author, self.location)
+// 	}
+// }
+
+// impl Summary for NewsArticle {
+// 	fn summarize_author(&self) -> String {
+// 		format!("{}", self.author)
+// 	}
+// }
+
+// impl Summary for Tweet {
+// 	fn summarize_author(&self) -> String {
+// 		format!("@{}", self.username)
+// 	}
+
+	// fn summarize(&self) -> String {
+	// 	format!("{} : {}", self.username, self.content)
+	// }
+// }
+
+
+// fn main() {
+// let tweet = Tweet {
+// 	username: String::from("antony"),
+// 	content: String::from("J'apprends Rust depuis avril, c'est très intéressant."),
+// 	reply: false,
+// 	retweet: true,
+// };
+
+// println!("One new tweet : {}", tweet.summarize());
+
+// let article = NewsArticle {
+// 	headline: String::from("La fête du miassou bat son plein à Fillou-les-Rillettes !"),
+// 	location: String::from("Fillou-les-Rillettes"),
+// 	author: String::from("Anne-Sophie Lapix"),
+// 	content: String::from("La 28ème fête du miassou a battu des records de fréquentation cette année, amenant des millers de personnes dans le petit village de Fillou-les-Rillettes"),
+// };
+// // println!("{}", article.summarize());
+// 	notify(article);
+
+// }
+
+// pub fn notify(item: impl Summary) {
+// 	println!("Breaking news : {}", item.summarize());
+// }
+
+// fn main() {
+// 	let b = "bottle";
+// 	let c = 's';
+// 	let d = "of beer";
+// 	let w = " on the wall";
+// 	let t = "Take one down and pass it around";
+// 	let n ="no more";
+// 	let m = "No more";
+// 	let g = "Go to the store and buy some more";
+
+// 	for i in (0..100).rev() {
+// 		match i {
+// 			2 => println!("{} {}{} {}{}, {} {}{} {}.\n{}, {} {} {}{}.\n",i,b,c,d,w,i,b,c,d, t,i-1,b,d,w),
+// 			1 => println!("{} {} {}{}, {} {} {}.\n{}, {} {}{} {}{}.\n",i,b,d,w,i,b,d, t,n,b,c,d,w),
+// 			0 =>println!("{} {}{} {}{}, {} {}{} {}.\n{}, 99 {}{} {}{}.\n",m,b,c,d,w,n,b,c,d ,g,b,c,d,w),
+// 			_ => println!("{} {}{} {}{}, {} {}{} {}.\n{}, {} {}{} {}{}.\n",i,b,c,d,w,i,b,c,d, t,i-1,b,c,d,w),
+// 		}
+// 	}
+// }
+
+// struct Point<T, U> {
+// 	x: T,
+// 	y: U,
+// }
+
+// impl<T,U> Point<T, U> {
+// 	fn melange<V, W>(self, other: Point<V, W>) -> Point<T, W> {
+// 		Point {
+// 			x: self.x,
+// 			y: other.y,
+// 		}
+// 	}
+// }
+
+// fn main() {
+// 	let p1 = Point {x: 5, y: 10.34};
+// 	let p2 = Point {x: "Hello", y: 'c'};
+// 	let p3 = p1.melange(p2);
+// 	println!("p3 = x: {} y: {}", p3.x, p3.y);
+// }
+
+// fn main() {
+// 	let v = vec![12, 34, 78, 4, 78, 38];
+// 	let a:[i32;5] = [1, 2, 5, 4, 3];
+// 	println!("{}", big_num(&v));
+// 	println!("{}", big_num(&a));
+// 	let prenom = ['a', 'n', 't', 'o', 'n'];
+// 	print!("{}", big_char(&prenom));
+	
+// }
+
+// fn big_num(liste: &[i32]) -> i32 {
+// 	let mut maximum: i32 = liste[0];
+// 	for &n in liste {
+// 		if n > maximum {
+// 			maximum = n;
+// 		}
+// 	}
+// 	maximum
+// }
+
+// fn big_char(liste: &[char]) -> char {
+// 	let mut max_char = liste[0];
+// 	for &c in liste {
+// 		if c > max_char {
+// 			max_char = c;
+// 		}
+// 	}
+// 	max_char
+// }
+
+// fn generic_largest<T>(liste: &[T]) -> T {
+// 	let mut largest = liste[0];
+// 	for &el in liste {
+// 		if el > largest {
+// 			largest = el;
+// 		}
+// 	}
+// 	largest
+// }
 
 
 
