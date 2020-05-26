@@ -1,0 +1,327 @@
+﻿// LIFETIMES
+// 'a it means that the lifetime of the reference returned by the longest function 
+// is the same as the smaller of the lifetimes of the references passed in.
+// when we specify the lifetime parameters in this function signature, 
+// we’re not changing the lifetimes of any values passed in or returned. 
+// Rather, we’re specifying that the borrow checker should reject any values 
+// that don’t adhere to these constraints.
+
+fn longest<'a>(s: &'a str, t: &'a str) -> &'a str {
+	if s.len() > t.len() {
+		s
+	} else {
+		t
+	}
+}
+
+// TRAITS
+// A trait tells the Rust compiler about functionality a particular type has and can share with other types. 
+// We can use traits to define shared behavior in an abstract way. 
+// We can use trait bounds to specify that a generic can be any type that has certain behavior.
+
+pub trait Summary {
+	fn summarize_author(&self) -> String;
+
+	fn summarize(&self) -> String {
+		format!("Read more from {}", self.summarize_author())
+	}
+}
+
+pub struct NewsArticle {
+	pub headline: String,
+	pub location: String,
+	pub author: String,
+	pub content: String,
+}
+
+pub struct Tweet {
+	pub username: String,
+	pub content: String,
+	pub reply: bool,
+	pub retweet: bool,
+}
+
+// impl Summary for NewsArticle {
+// 	fn summarize(&self) -> String {
+// 		format!("{} by {}. ({})", self.headline, self.author, self.location)
+// 	}
+// }
+
+impl Summary for NewsArticle {
+	fn summarize_author(&self) -> String {
+		format!("{}", self.author)
+	}
+}
+
+impl Summary for Tweet {
+	fn summarize_author(&self) -> String {
+		format!("@{}", self.username)
+	}
+
+	// fn summarize(&self) -> String {
+	// 	format!("{} : {}", self.username, self.content)
+	// }
+}
+
+
+fn main() {
+let tweet = Tweet {
+	username: String::from("antony"),
+	content: String::from("J'apprends Rust depuis avril, c'est très intéressant."),
+	reply: false,
+	retweet: true,
+};
+
+println!("One new tweet : {}", tweet.summarize());
+
+let article = NewsArticle {
+	headline: String::from("La fête du miassou bat son plein à Fillou-les-Rillettes !"),
+	location: String::from("Fillou-les-Rillettes"),
+	author: String::from("Anne-Sophie Lapix"),
+	content: String::from("La 28ème fête du miassou a battu des records de fréquentation cette année, amenant des millers de personnes dans le petit village de Fillou-les-Rillettes"),
+};
+println!("{}", article.summarize());
+}
+
+// GENERICS
+// when we use a type parameter name in a function signature, we have to declare the type parameter name before we use it. To define the generic largest function, place type name declarations inside angle brackets, <>, between the name of the function and the parameter list, like this:
+
+fn largest<T>(list: &[T]) -> T {}
+
+// We read this definition as: the function largest is generic over some type T. This function has one parameter named list, which is a slice of values of type T. The largest function will return a value of the same type T.
+
+// FU
+// prend un usize,
+// convertit en String
+// itere sur les chars, à l'envers
+// collecte le tout dans un autre String
+// parse le string en usize
+// unwrap.
+let r = i.to_string().chars().rev().collect::<String>().parse::<usize>().unwrap();
+
+// [CHARS]
+// Iterate through unicode
+    (0..200).for_each(|c| println!("{}", std::char::from_u32(c).unwrap_or(' ')));
+    OR
+	for chr in (0..200).filter_map(|c| std::char::from_u32(c + u32::from(b'0'))) {
+		println!("{}", chr);
+	}
+
+// [VECTOR & ENUMS]
+enum Classeur {
+	Int(i32),
+	Float(f64),
+	Text(String),
+}
+
+fn main() {
+	let ligne = vec![
+		Classeur::Int(456),
+		Classeur::Text(String::from("Ventes")),
+		Classeur::Float(987367.78987),
+	];
+
+	for case in &ligne{
+		match case {
+			Classeur::Int(num) => println!("{}", num),
+			Classeur::Float(num) => println!("{}", num),
+			Classeur::Text(mot) => println!("{}", mot),
+		}
+	}
+}
+
+// [OPTION TYPE]
+
+enum Option<T> {
+    Some(T),
+    None,
+}
+
+    let some_number = Some(5);
+    let some_string = Some("a string");
+
+    let absent_number: Option<i32> = None;
+
+// If we use None rather than Some, we need to tell Rust what type of Option<T> we have, because the compiler can’t infer the type that the Some variant will hold by looking only at a None value.
+
+// If let
+
+let some_u8_value = Some(0u8);
+match some_u8_value {
+    Some(3) => println!("three"),
+    _ => (),
+}
+
+if let Some(3) = some_u8_value {
+    println!("three");
+}
+
+// In other words, you can think of if let as syntax sugar for a match that runs code when the value matches one pattern and then ignores all other values.
+
+// [MODULE]
+mod module; // a mettre dans le main.rs 
+// appelle le module.rs
+
+// [VARIABLE GLOBALE]
+static mut COMPTEUR: u32 = 5;
+
+// [ASSERTION TESTING]
+assert_eq!(2, mot.len()); --> renvoit bool
+
+// [STRINGS]
+// Primitive str = immutable fixed-length string litteral somewhere in the memory
+// String = Growable, heap-allocated data structure. Use when I need to modify or own.
+
+// get lenght
+.len()
+// Push char
+.push()
+// Push string
+.push_str()
+// Capacity in bytes
+.capacity()
+let mot = String::with_capacity(10);
+mot.push('a');
+// Vide ?
+.is_empty()
+// Contains
+.contains()
+
+
+// [USER INPUT]
+	loop{
+		println!("Entrez le premier nombre la séquence de Collatz");
+		let mut user_input = String::new();
+		io::stdin().read_line(&mut user_input)
+		.expect("Problème mémoire.");
+		let chiffre: u32 = match user_input.trim().parse() {
+			Ok(num) => num,
+			Err(_) => continue,
+        };
+        
+    	let mut user_input = String::new();
+    	std::io::stdin().read_line(&mut user_input).ok().expect("Erreur de lecture.");
+    	println!("{}", user_input);
+
+
+// [MULTIDIMENSIONNAL ARRAYS]
+for (i, row) in my_int_matrix.iter().enumerate() {
+    for (j, col) in row.iter().enumerate() {
+        println!("[row={}][col={}]={}", i, j, col);
+    }
+}
+
+const LIGNES: usize = 9;
+	const COLS: usize = 6;
+
+	let heart: [[char; COLS]; LIGNES] = [
+		['.', '.', '.', '.', '.', '.'],
+        ['.', 'O', 'O', '.', '.', '.'],
+        ['O', 'O', 'O', 'O', '.', '.'],
+        ['O', 'O', 'O', 'O', 'O', '.'],
+        ['.', 'O', 'O', 'O', 'O', 'O'],
+        ['O', 'O', 'O', 'O', 'O', '.'],
+        ['O', 'O', 'O', 'O', '.', '.'],
+        ['.', 'O', 'O', '.', '.', '.'],
+        ['.', '.', '.', '.', '.', '.'],
+        ];
+
+    for i in 0..COLS{
+    	for j in 0..LIGNES{
+    		print!("{}", heart[j][i]);
+    	}
+    	println!();
+    }
+
+
+// STRUCTS & TUPLES STRUCTS
+
+// * On ne peut pas faire d'itération sur des structs ou tuples, car leurs éléments ont des tailles différentes.
+
+// .iter() is a method that returns each element in a collection and that enumerate wraps the result of iter and returns each element as part of a tuple instead. (index, element)
+
+fn first_word(s: &String) -> usize {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return i;
+        }
+    }
+
+    s.len()
+}
+
+impl Rectangle {
+    // Méthodes (prennent en argument &self)
+    // S'appelle sur une instance avec un .
+    fn area(&self) -> u32 {
+        self.longueur * self.largeur
+    }
+
+    fn can_hold(&self, autre_rectangle: &Rectangle) -> bool {
+        self.longueur > autre_rectangle.longueur && 
+        self.largeur > autre_rectangle.largeur
+    }
+
+    // Fonction associée (ex : un constructeur)
+    // S'appelle sur le type avec :: ( ex: let mon_carre = Rectangle::cree_carre(3); )
+    fn cree_carre(cote: u32) -> Rectangle {
+        Rectangle { longueur: cote, largeur: cote }
+    }
+}
+
+fn main() {
+    let rect1 = Rectangle { longueur: 30, largeur: 50};
+    let rect2 = Rectangle { longueur: 10, largeur: 40};
+    let rect3 = Rectangle { longueur: 60, largeur: 45};
+
+    println!("Est ce que rect1 peut contenir rect2 ? \t {}", rect1.can_hold(&rect2));
+    println!("Est ce que rect1 peut contenir rect3 ? \t {}", rect1.can_hold(&rect3));
+
+    println!("L'aire du rectangle est {} pixels carrés.", rect1.area());
+
+
+    // DEPENDENCIES
+    /* Members of the Rust community have made many packages available at crates.io, 
+    and pulling any of them into your package involves these same steps: listing them 
+    in your package’s Cargo.toml file and using use to bring items into scope. 
+
+    Note that the standard library (std) is also a crate that’s external to our package. 
+    Because the standard library is shipped with the Rust language, we don’t need to 
+    change Cargo.toml to include std. But we do need to refer to it with use to bring 
+    items from there into our package’s scope. For example, with HashMap we would use 
+    this line: */
+
+use std::collections::HashMap;
+// This is an absolute path starting with std, the name of the standard library crate.
+
+// Using Nested Paths to Clean Up Large use Lists
+use std::{cmp::Ordering, io};
+
+use std::io;
+use std::io::Write; /* est égal à */ use std::io::{self, Write};
+
+// The Glob Operator
+use std::collections::*;
+
+
+// VECTORS
+let v = vec![1, 2, 3, 4, 5];
+
+let third: &i32 = &v[2];
+println!("The third element is {}", third);
+
+match v.get(2) {
+    Some(third) => println!("The third element is {}", third),
+    None => println!("There is no third element."),
+}
+
+// OWNERSHIP
+// Each value in Rust has a variable that’s called its owner.
+// There can only be one owner at a time.
+// When the owner goes out of scope, the value will be dropped.
+
+// REFERENCES & BORROWING
+// At any given time, you can have either one mutable reference or any number of immutable references.
+// References must always be valid.

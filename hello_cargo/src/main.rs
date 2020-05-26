@@ -1,14 +1,117 @@
-fn main() {
-	let v = vec![12, 34, 78, 4, 78, 38];
-	let a:[i32;5] = [1, 2, 5, 4, 3];
-	println!("{}", generic_largest(&v));
-	println!("{}", generic_largest(&a));
-	// println!("{}", big_num(&v));
-	// println!("{}", big_num(&a));
-	let prenom = ['a', 'n', 't', 'o', 'n'];
-	print!("{}", generic_largest(&prenom));
-	
+fn main() {for i in 3..10{d(i);}}
+fn d(l: usize) {
+	let w = l*2-1;
+	let mut r = String::new();
+	let  a = '*';
+	for i in 1..l+1{
+		if i==1{
+			r.push(a);
+		}else{
+			r.push(a);
+			r.push(a);
+		}
+		println!(" {:^lar$}", r, lar = w);
+	}
+	println!(" {:^lar$}\n", a, lar = w);
 }
+
+// fn main() {
+// 	let ln = 9;
+// 	let w = ln * 2 - 1;
+
+// 	let mut ligne = String::new();
+// 	let  a = '*';
+// 	for i in 1..ln+1 {
+// 		if i == 1 {
+// 			ligne.push(a);
+// 		} else {
+// 			ligne.push(a);
+// 			ligne.push(a);
+// 		}
+// 		println!("{:^lar$}", ligne, lar = w);
+// 	}
+// 	println!("{:^lar$}\n", a, lar = w);
+// }
+
+// fn main() {
+// 	for i in 3..10 {
+// 		draw_tree(i);
+// 	}
+// }
+
+// fn draw_tree(l: usize) {
+// 	let w: usize = l * 2 - 1;
+
+// 	let mut ligne = String::new();
+// 	let  a = '*';
+// 	for i in 1..l+1 {
+// 		if i == 1 {
+// 			ligne.push(a);
+// 		} else {
+// 			ligne.push(a);
+// 			ligne.push(a);
+// 		}
+// 		println!(" {:^lar$}", ligne, lar = w);
+// 	}
+// 	println!(" {:^lar$}\n", a, lar = w);
+// }
+	
+	// let mut l: usize = 1;
+	// for x in 1..4 {
+	// 	let mut y = x;
+	// 	let mut s = String::new();
+	// 	while y > 0 {
+	// 		// print!("{:^w$}", '*', w = x);
+
+	// 		y -= 1;
+	// 	}
+	// println!();
+// 	}
+// }
+// fn main() {
+// 	// let taille = 3;
+// 	for i in 0..3 {
+// 		for s in (0..i).rev() {
+// 			print!(" ");
+// 		}
+// 		for x in 0..i {
+// 			print!("*");
+// 		}
+// 		for s in (0..i).rev() {
+// 			print!(" ");
+// 		}
+// 		println!();
+// }
+	
+// }
+
+// fn main() {
+// 	let s1 = String::from("abcd");
+// 	let s2 = "xyz";
+
+// 	let result = longest(s1.as_str(), s2);
+// 	println!("The longest string is {}", result);
+// 	next();
+// }
+
+// fn longest<'a>(s: &'a str, t: &'a str) -> &'a str {
+// 	if s.len() > t.len() {
+// 		s
+// 	} else {
+// 		t
+// 	}
+// }
+// fn main() {
+// 	let v = vec![12, 34, 78, 4, 78, 38];
+// 	let a:[i32;5] = [1, 2, 5, 4, 3];
+// 	println!("{}", generic_largest(&v));
+// 	println!("{}", generic_largest(&a));
+// 	// println!("{}", big_num(&v));
+// 	// println!("{}", big_num(&a));
+// 	let prenom = ['a', 'n', 't', 'o', 'n'];
+// 	print!("{}", generic_largest(&prenom));
+	
+// }
 
 // fn big_num(liste: &[i32]) -> i32 {
 // 	let mut maximum: i32 = liste[0];
@@ -30,15 +133,15 @@ fn main() {
 // 	max_char
 // }
 
-fn generic_largest<T: PartialOrd + Copy>(liste: &[T]) -> T {
-	let mut largest = liste[0];
-	for &el in liste {
-		if el > largest {
-			largest = el;
-		}
-	}
-	largest
-}
+// fn generic_largest<T: PartialOrd + Copy>(liste: &[T]) -> T {
+// 	let mut largest = liste[0];
+// 	for &el in liste {
+// 		if el > largest {
+// 			largest = el;
+// 		}
+// 	}
+// 	largest
+// }
 
 // use std::env;
 // fn main() {
