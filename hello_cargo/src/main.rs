@@ -1,19 +1,67 @@
-fn main() {for i in 3..10{d(i);}}
-fn d(l: usize) {
-	let w = l*2-1;
-	let mut r = String::new();
-	let  a = '*';
-	for i in 1..l+1{
-		if i==1{
-			r.push(a);
-		}else{
-			r.push(a);
-			r.push(a);
-		}
-		println!(" {:^lar$}", r, lar = w);
+fn main() {
+	for i in 0..9 {
+		l(i);
+		println!();
 	}
-	println!(" {:^lar$}\n", a, lar = w);
+	// for i in 1..9 {
+	// 	l(i);
+	// }
+	// println!("{}", p(3));
+	// println!("{}", p(3));
 }
+
+fn p(x: i32) -> String {
+	let mut ligne = String::new();
+	for i in 1..x {
+		let c = i.to_string();
+		ligne.push_str(&c[..]);
+	}
+	for i in (1..x - 1).rev() {
+		let c = i.to_string();
+		ligne.push_str(&c[..]);
+	}
+	ligne
+}
+
+fn l(x:i32) {
+	// let mut v: Vec<String> = vec![];
+	// for i in 1..x + 2 {
+	// 	v.push(p(i));
+	// 	println!("{:^17}", v[i as usize - 1]);
+	// }
+	// for i in (1..x+1).rev() {
+	// 	println!("{:^17}", v[i as usize - 1]);
+	// }
+	let mut v: Vec<String> = Vec::new();
+	for i in 0..x{
+		v.push(p(i+2));
+		println!("{:^17}", p(i+2));
+	}
+	if x > 1 {
+		v.reverse();
+		for e in v {
+			println!("{:^17}", e);
+		}
+	}
+	// println!();
+}
+
+// fn main() {for i in 3..10{d(i);}}
+// fn d(l: usize) {
+// 	let w = l*2-1;
+// 	let mut r = String::new();
+// 	let  a = '*';
+// 	for i in 1..l+1{
+// 		if i==1{
+// 			r.push(a);
+// 		}else{
+// 			r.push(a);
+// 			r.push(a);
+// 		}
+// 		println!(" {:^lar$}", r, lar = w);
+// 	}
+// 	println!(" {:^lar$}\n", a, lar = w);
+// }
 
 // fn main() {
 // 	let ln = 9;
