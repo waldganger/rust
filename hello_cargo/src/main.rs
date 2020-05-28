@@ -1,14 +1,14 @@
 fn main() {
-	for i in 0..9 {
+	for i in 0..10 {
 		l(i);
-		if i > 0 && i < 8 {
+		if i > 0 && i < 9 {
 			println!();
 		}
 	}
 }
 
 fn p(x: i32) -> String {
-	let mut ligne = String::new();
+	let mut ligne = String::from(" ");
 	for i in 1..x {
 		let c = i.to_string();
 		ligne.push_str(&c[..]);
@@ -24,12 +24,12 @@ fn l(x:i32) {
 	let mut v: Vec<String> = Vec::new();
 	for i in 0..x{
 		v.push(p(i+2));
-		println!("{:^17}", p(i+2));
+		println!("{:^18}", p(i+2));
 	}
 	if x > 1 {
 		v.reverse();
 		for e in &v[1..] {
-			println!("{:^17}", e);
+			println!("{:^18}", e);
 		}
 	}
 }
