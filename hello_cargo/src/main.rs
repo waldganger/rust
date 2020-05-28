@@ -1,13 +1,10 @@
 fn main() {
 	for i in 0..9 {
 		l(i);
-		println!();
+		if i > 0 && i < 8 {
+			println!();
+		}
 	}
-	// for i in 1..9 {
-	// 	l(i);
-	// }
-	// println!("{}", p(3));
-	// println!("{}", p(3));
 }
 
 fn p(x: i32) -> String {
@@ -24,14 +21,6 @@ fn p(x: i32) -> String {
 }
 
 fn l(x:i32) {
-	// let mut v: Vec<String> = vec![];
-	// for i in 1..x + 2 {
-	// 	v.push(p(i));
-	// 	println!("{:^17}", v[i as usize - 1]);
-	// }
-	// for i in (1..x+1).rev() {
-	// 	println!("{:^17}", v[i as usize - 1]);
-	// }
 	let mut v: Vec<String> = Vec::new();
 	for i in 0..x{
 		v.push(p(i+2));
@@ -39,11 +28,10 @@ fn l(x:i32) {
 	}
 	if x > 1 {
 		v.reverse();
-		for e in v {
+		for e in &v[1..] {
 			println!("{:^17}", e);
 		}
 	}
-	// println!();
 }
 
 // fn main() {for i in 3..10{d(i);}}
