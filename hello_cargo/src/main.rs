@@ -1,38 +1,90 @@
 fn main() {
-	for i in 0..10 {
-		l(i);
-		if i > 0 && i < 9 {
-			println!();
-		}
+	// println!("\u{2571} \u{2502} \u{2500} \u{2588}");
+	let s = ' ';
+	let r = '\u{2588}';
+	let f = '\u{2500}';
+	let d = '\u{2571}';
+	let v = '\u{2502}';
+
+
+	let arr: [(u32, char); 4] = [(1, s), (1, d), (4, s), (1, d)];
+	for i in arr.iter() {
+		println!("{}", i.0);
 	}
+
+	let l1 = (2, s, 1, r, 4, f, 1, r);
+	let l2 = ((1, s), (1, d), (4, s), (1, d), (1, v));
+	let l3 = ((1, r), (4, f), (1, r), (1, s), (1, v));
+	let l4_fantome = ((0, v), (0, s), (0, v), (0, s), (0, v));
+	let l5 = ((1, v), (4, s), (1, v), (1, s), (1, r));
+	let l6_fantome = ((1, v), (4, s), (1, v), (0, s), (1, d));
+	let l7 = ((1, r), (4, f), (1, r), (2, s));
+
+	let t = (l1, l2, l3, l4_fantome, l5, l6_fantome, l7);
+
+	assert_eq!((l1.0), 2);
+
+
+
+
+
+	// let pre_space = 2;
+	// let mut flat_line = 0;
+	// for i in 0..7 {
+	// 	flat_line += 4;
+	// 	let mut l1 = String::new();
+	// 	for j in 0..i+pre_space {
+	// 		l1.push(' ');
+	// 	}
+	// 	l1.push('\u{2588}');
+	// 	for k in 0..flat_line {
+	// 		l1.push('\u{2500}');
+	// 	}
+	// 	l1.push('\u{2588}');
+	// 	println!("{}", l1);
+		// l1 imprimée
+
+	// 	let mut l2 = String::new();
+	// }
+	// assert_eq!(flat_line, 28);
 }
 
-fn p(x: i32) -> String {
-	let mut ligne = String::from(" ");
-	for i in 1..x {
-		let c = i.to_string();
-		ligne.push_str(&c[..]);
-	}
-	for i in (1..x - 1).rev() {
-		let c = i.to_string();
-		ligne.push_str(&c[..]);
-	}
-	ligne
-}
+// fn main() {
+// 	for i in 0..10 {
+// 		l(i);
+// 		if i > 0 && i < 9 {
+// 			println!();
+// 		}
+// 	}
+// }
 
-fn l(x:i32) {
-	let mut v: Vec<String> = Vec::new();
-	for i in 0..x{
-		v.push(p(i+2));
-		println!("{:^18}", p(i+2));
-	}
-	if x > 1 {
-		v.reverse();
-		for e in &v[1..] {
-			println!("{:^18}", e);
-		}
-	}
-}
+// fn p(x: i32) -> String {
+// 	let mut ligne = String::from(" ");
+// 	for i in 1..x {
+// 		let c = i.to_string();
+// 		ligne.push_str(&c[..]);
+// 	}
+// 	for i in (1..x - 1).rev() {
+// 		let c = i.to_string();
+// 		ligne.push_str(&c[..]);
+// 	}
+// 	ligne
+// }
+
+// fn l(x:i32) {
+// 	let mut v: Vec<String> = Vec::new();
+// 	for i in 0..x{
+// 		v.push(p(i+2));
+// 		println!("{:^18}", p(i+2));
+// 	}
+// 	if x > 1 {
+// 		v.reverse();
+// 		for e in &v[1..] {
+// 			println!("{:^18}", e);
+// 		}
+// 	}
+// 	print!("yes");
+// }
 
 // fn main() {for i in 3..10{d(i);}}
 // fn d(l: usize) {
