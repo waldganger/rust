@@ -1,31 +1,51 @@
 fn main() {
-	// println!("\u{2571} \u{2502} \u{2500} \u{2588}");
 	let s = ' ';
 	let r = '\u{2588}';
 	let f = '\u{2500}';
 	let d = '\u{2571}';
 	let v = '\u{2502}';
 
+	let l1 = [(2, s), (1, r), (4, f), (1, r)];
+	let l2 = [(1, s), (1, d), (4, s), (1, d), (1, v)];
+	let l3 = [(1, r), (4, f), (1, r), (1, s), (1, v)];
+	let l4_fantome = [(0, v), (0, s), (0, v), (0, s), (0, v)];
+	let l5 = [(1, v), (4, s), (1, v), (1, s), (1, r)];
+	let l6_fantome = [(1, v), (4, s), (1, v), (0, s), (1, d)];
+	let l7 = [(1, r), (4, f), (1, r), (2, s)];	
 
-	let arr: [(u32, char); 4] = [(1, s), (1, d), (4, s), (1, d)];
-	for i in arr.iter() {
-		println!("{}", i.0);
+	assert_eq!(l1[0].0, 2);
+
+	for x in 1..8 {
+		println!("{}", pl(&l1, x));
+		for y in 0..x  {
+			println!("{}", pl(&l2, x - y)); 
+			
+		}
+		
+		println!("{}", pl(&l3, x));
 	}
 
-	let l1 = (2, s, 1, r, 4, f, 1, r);
-	let l2 = ((1, s), (1, d), (4, s), (1, d), (1, v));
-	let l3 = ((1, r), (4, f), (1, r), (1, s), (1, v));
-	let l4_fantome = ((0, v), (0, s), (0, v), (0, s), (0, v));
-	let l5 = ((1, v), (4, s), (1, v), (1, s), (1, r));
-	let l6_fantome = ((1, v), (4, s), (1, v), (0, s), (1, d));
-	let l7 = ((1, r), (4, f), (1, r), (2, s));
-
-	let t = (l1, l2, l3, l4_fantome, l5, l6_fantome, l7);
-
-	assert_eq!((l1.0), 2);
-
-
-
+	fn pl(arr: &[(i32, char)], x: i32) -> String {
+		let mut line = String::new();
+		for i in arr.iter() {
+			if i.1 == '\u{2588}' || i.1 == '\u{2571}' || i.1 == '\u{2502}' {
+				for j in 0..i.0 {
+					line.push(i.1);
+				}
+			} else if i.1 == ' ' && i.0 < 4 {
+				for k in 0..i.0 + (x - 1) {
+					line.push(i.1);
+					}
+			} else {
+				for l in 0..i.0 * x {
+					line.push(i.1);
+				}
+			}	
+		}
+		line
+	}
+	// à chaque itération de i
+	// les 
 
 
 	// let pre_space = 2;
