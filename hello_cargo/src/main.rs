@@ -5,48 +5,90 @@ fn main() {
 	let d = '\u{2571}';
 	let v = '\u{2502}';
 
-	let l1 = [(2, s), (1, r), (4, f), (1, r)];
+	let mut l1: [(i32, i32, char); 4] = [(2, 8, s), (1, 1, r), (4, 28, f), (1, 1, r)];
 	let l2 = [(1, s), (1, d), (4, s), (1, d), (1, v)];
 	let l3 = [(1, r), (4, f), (1, r), (1, s), (1, v)];
 	let l4_fantome = [(0, v), (0, s), (0, v), (0, s), (0, v)];
 	let l5 = [(1, v), (4, s), (1, v), (1, s), (1, r)];
 	let l6_fantome = [(1, v), (4, s), (1, v), (0, s), (1, d)];
-	let l7 = [(1, r), (4, f), (1, r), (2, s)];	
+	let l7 = [(1, r), (4, f), (1, r), (2, s)];
+	
 
-	assert_eq!(l1[0].0, 2);
+	let mut vecteur: Vec<String> = Vec::new();
 
-	for x in 1..8 {
-		println!("{}", pl(&l1, x));
-		for y in 0..x  {
-			println!("{}", pl(&l2, x - y)); 
-			
-		}
+	fn pl2(arr: &mut [(i32, i32, char)], vecteur: &mut Vec<String>) {
 		
-		println!("{}", pl(&l3, x));
-	}
-
-	fn pl(arr: &[(i32, char)], x: i32) -> String {
-		let mut line = String::new();
-		for i in arr.iter() {
-			if i.1 == '\u{2588}' || i.1 == '\u{2571}' || i.1 == '\u{2502}' {
-				for j in 0..i.0 {
-					line.push(i.1);
-				}
-			} else if i.1 == ' ' && i.0 < 4 {
-				for k in 0..i.0 + (x - 1) {
-					line.push(i.1);
-					}
-			} else {
-				for l in 0..i.0 * x {
-					line.push(i.1);
-				}
-			}	
+		
+		for tuple in arr.iter_mut() {
+			let mut line = String::new();
+			println!("{:?}", tuple);
+			while tuple.0 <= tuple.1 {
+				let (plancher_mobile, plafond, c) = *tuple; 
+				liner(plancher_mobile, c, &mut line);
+				tuple.0 += 1;
+			}
+			vecteur.push(line.clone());
+			// on passe au tuple suivant dans l'array
 		}
-		line
+		// line
 	}
-	// à chaque itération de i
-	// les 
+	// fn pl appelle tuple range et lui passe le bon index situé entre (min max)
+	// pour chaque tuple de l'array, imprime le bon nombre de charactères. prend le top en arg.
+	fn liner(plancher_mobile: i32, character: char, s: &mut String) {
+		for i in 0..plancher_mobile {
+			s.push(character)
+		}
+	}
 
+	// println!("{}", pl2(&mut l1));
+	pl2(&mut l1, &mut vecteur);
+	for s in vecteur {
+		println!("{}RET", s);
+	}
+
+	// for n in 0..7 {
+	// 	// let s = pl2(&l1);
+	// 	stock.push(pl2(&l1));
+	// 	// println!("{}", pl2(&l1));
+	// 	for ligne in &stock {
+	// 		println!("{}", ligne);
+	// 	}
+	// }
+
+	// assert_eq!(l1[0].0, 2);
+
+	// for x in 1..8 {
+	// 	println!("{}", pl(&l1, x));
+	// 	for y in 0..x  {
+	// 		println!("{}", pl(&l2, x - y)); 
+			
+	// 	}
+		
+	// 	println!("{}", pl(&l3, x));
+	// }
+
+	// fn pl(arr: &[(i32, char)], x: i32) -> String {
+	// 	let mut line = String::new();
+	// 	for i in arr.iter() {
+	// 		if i.1 == '\u{2588}' || i.1 == '\u{2571}' || i.1 == '\u{2502}' {
+	// 			for j in 0..i.0 {
+	// 				line.push(i.1);
+	// 			}
+	// 		} else if i.1 == ' ' && i.0 < 4 {
+	// 			for k in 0..i.0 + (x - 1) {
+	// 				line.push(i.1);
+	// 				}
+	// 		} else {
+	// 			for l in 0..i.0 * x {
+	// 				line.push(i.1);
+	// 			}
+	// 		}	
+	// 	}
+	// 	line
+	// }
+
+	// idée 3 : faire chaque ligne correctement 7 fois et les stocker dans un array
+	// pour affichage final.
 
 	// let pre_space = 2;
 	// let mut flat_line = 0;
