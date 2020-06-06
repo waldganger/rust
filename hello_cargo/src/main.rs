@@ -17,19 +17,17 @@ fn main() {
 	let mut vecteur: Vec<String> = Vec::new();
 
 	fn pl2(arr: &mut [(i32, i32, char)], vecteur: &mut Vec<String>) {
-		
+		let mut line = String::new();
 		
 		for tuple in arr.iter_mut() {
-			let mut line = String::new();
+			
 			println!("{:?}", tuple);
-			while tuple.0 <= tuple.1 {
-				let (plancher_mobile, plafond, c) = *tuple; 
-				liner(plancher_mobile, c, &mut line);
-				tuple.0 += 1;
-			}
-			vecteur.push(line.clone());
-			// on passe au tuple suivant dans l'array
+
+			let (plancher_mobile, plafond, c) = *tuple; 
+			liner(plancher_mobile, c, &mut line);
+			tuple.0 += 1;
 		}
+		vecteur.push(line.clone());
 		// line
 	}
 	// fn pl appelle tuple range et lui passe le bon index situé entre (min max)
@@ -43,7 +41,7 @@ fn main() {
 	// println!("{}", pl2(&mut l1));
 	pl2(&mut l1, &mut vecteur);
 	for s in vecteur {
-		println!("{}RET", s);
+		print!("{}", s);
 	}
 
 	// for n in 0..7 {
