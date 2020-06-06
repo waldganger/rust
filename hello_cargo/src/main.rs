@@ -5,7 +5,7 @@ fn main() {
 	let d = '\u{2571}';
 	let v = '\u{2502}';
 
-	let mut l1: [(i32, i32, char); 4] = [(2, 8, s), (1, 1, r), (4, 28, f), (1, 1, r)];
+	let mut l1: [(i32, i32, char); 4] = [(2, 8, s), (1, 1, r), (4, 28, f), (1, 1, r)];  // pas le choix, il faut renseigner le step.
 	let l2 = [(1, s), (1, d), (4, s), (1, d), (1, v)];
 	let l3 = [(1, r), (4, f), (1, r), (1, s), (1, v)];
 	let l4_fantome = [(0, v), (0, s), (0, v), (0, s), (0, v)];
@@ -24,15 +24,17 @@ fn main() {
 			println!("{:?}", tuple);
 
 			let (plancher_mobile, plafond, c) = *tuple; 
-			liner(plancher_mobile, c, &mut line);
-			tuple.0 += 1;
+			c_push(plancher_mobile, c, &mut line);
+			if tuple.0 < tuple.1 {
+				tuple.0 += 1;
+			}
 		}
 		vecteur.push(line.clone());
 		// line
 	}
 	// fn pl appelle tuple range et lui passe le bon index situé entre (min max)
 	// pour chaque tuple de l'array, imprime le bon nombre de charactères. prend le top en arg.
-	fn liner(plancher_mobile: i32, character: char, s: &mut String) {
+	fn c_push(plancher_mobile: i32, character: char, s: &mut String) {
 		for i in 0..plancher_mobile {
 			s.push(character)
 		}
