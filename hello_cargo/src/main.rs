@@ -5,7 +5,7 @@ fn main() {
 	let d = '\u{2571}';
 	let v = '\u{2502}';
 
-	let mut l1: [(i32, i32, char); 4] = [(2, 8, s), (1, 1, r), (4, 28, f), (1, 1, r)];  // pas le choix, il faut renseigner le step.
+	let mut l1: [(i32, i32, i32, char, bool); 4] = [(2, 8, 1, s, false), (1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false)];  // pas le choix, il faut renseigner le step.
 	let l2 = [(1, s), (1, d), (4, s), (1, d), (1, v)];
 	let l3 = [(1, r), (4, f), (1, r), (1, s), (1, v)];
 	let l4_fantome = [(0, v), (0, s), (0, v), (0, s), (0, v)];
@@ -16,35 +16,48 @@ fn main() {
 
 	let mut vecteur: Vec<String> = Vec::new();
 
-	fn pl2(arr: &mut [(i32, i32, char)], vecteur: &mut Vec<String>) {
+	fn pl2(arr: &mut [(i32, i32, i32, char, bool)], vecteur: &mut Vec<String>) {
 		let mut line = String::new();
-		
-		for tuple in arr.iter_mut() {
-			
+		for tuple in arr.iter_mut() {	
 			println!("{:?}", tuple);
 
-			let (plancher_mobile, plafond, c) = *tuple; 
-			c_push(plancher_mobile, c, &mut line);
-			if tuple.0 < tuple.1 {
-				tuple.0 += 1;
+			let (mut mouvement, plafond, step, c, starter) = *tuple; 
+			if starter {
+				if mouvement > plafond {
+				tuple.0 = plafond;
+				mouvement = tuple.0;
+				println!("Limitatation du mouvement à {}", mouvement);
+				}
+				c_push(mouvement, c, &mut line);
+				tuple.0 += step;
+			} else {
+				c_push(mouvement, c, &mut line);
+				tuple.4 = true;
+				tuple.0 += step;
 			}
+			
+
 		}
 		vecteur.push(line.clone());
-		// line
+
 	}
-	// fn pl appelle tuple range et lui passe le bon index situé entre (min max)
-	// pour chaque tuple de l'array, imprime le bon nombre de charactères. prend le top en arg.
-	fn c_push(plancher_mobile: i32, character: char, s: &mut String) {
-		for i in 0..plancher_mobile {
+
+	fn c_push(mouvement: i32, character: char, s: &mut String) {
+		for i in 0..mouvement {
 			s.push(character)
 		}
 	}
 
-	// println!("{}", pl2(&mut l1));
-	pl2(&mut l1, &mut vecteur);
+	for n in 0..7 {
+		pl2(&mut l1, &mut vecteur);
+	}
+	
+
 	for s in vecteur {
 		print!("{}", s);
 	}
+
+	println!("{:?}", l1[0]);
 
 	// for n in 0..7 {
 	// 	// let s = pl2(&l1);
