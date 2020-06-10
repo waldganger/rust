@@ -6,15 +6,20 @@ fn main() {
 	let v = '\u{2502}';
 
 	let mut l1: [(i32, i32, i32, char, bool); 4] = [(2, 8, 1, s, false), (1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false)];  // pas le choix, il faut renseigner le step.
-	let l2 = [(1, s), (1, d), (4, s), (1, d), (1, v)];
-	let l3 = [(1, r), (4, f), (1, r), (1, s), (1, v)];
-	let l4_fantome = [(0, v), (0, s), (0, v), (0, s), (0, v)];
-	let l5 = [(1, v), (4, s), (1, v), (1, s), (1, r)];
-	let l6_fantome = [(1, v), (4, s), (1, v), (0, s), (1, d)];
-	let l7 = [(1, r), (4, f), (1, r), (2, s)];
+	let mut l2: [(i32, i32, i32, char, bool); 5] = [(1, 7, 1, s, false), (1, 1, 1, d, false), (4, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
+	let mut l3: [(i32, i32, i32, char, bool); 5] = [(1, 0, 1, s, false), (1, 1, 1, d, false), (4, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
+	let l4 = [(1, r), (4, f), (1, r), (1, s), (1, v)];
+	let l5_fantome = [(0, v), (0, s), (0, v), (0, s), (0, v)];
+	let l6 = [(1, v), (4, s), (1, v), (1, s), (1, r)];
+	let l7_fantome = [(1, v), (4, s), (1, v), (0, s), (1, d)];
+	let l8 = [(1, r), (4, f), (1, r), (2, s)];
 	
 
 	let mut vecteur: Vec<String> = Vec::new();
+
+	// plafond .1 : i.rev()
+	// mouvement .0 : n
+	
 
 	fn pl2(arr: &mut [(i32, i32, i32, char, bool)], vecteur: &mut Vec<String>) {
 		let mut line = String::new();
@@ -26,7 +31,7 @@ fn main() {
 				if mouvement > plafond {
 				tuple.0 = plafond;
 				mouvement = tuple.0;
-				println!("Limitatation du mouvement à {}", mouvement);
+				println!("Limitation du mouvement à {}", mouvement);
 				}
 				c_push(mouvement, c, &mut line);
 				tuple.0 += step;
@@ -48,13 +53,31 @@ fn main() {
 		}
 	}
 
+	// boucle finale d'affichage
 	for n in 0..7 {
 		pl2(&mut l1, &mut vecteur);
+		pl2(&mut l2, &mut vecteur);
+		// if n > 0 {
+			// départ de la boucle : l2[0].0
+			// puis application valeur fixes pour générer non seulement les valeurs du cube en cours
+			// mais aussi les valeurs des cubes à venir.
+		// }
+		for i in (0..n).rev() {
+			l3[0].1 = i;
+			l3[0].0 = n;
+			pl2(&mut l3, &mut vecteur);
+			// l3[0].4 = false;
+			
+		}
 	}
+
+	// 	for n in 0..7 {
+	// 	pl2(&mut l2, &mut vecteur);
+	// }
 	
 
 	for s in vecteur {
-		print!("{}", s);
+		println!("{}", s);
 	}
 
 	println!("{:?}", l1[0]);
