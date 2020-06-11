@@ -67,9 +67,6 @@ fn main() {
 			
 		}
 	}
-
-	
-
 	for s in vecteur {
 		println!("{}", s);
 	}
