@@ -70,9 +70,6 @@ fn main() {
 	for s in vecteur {
 		println!("{}", s);
 	}
-	
-
-
 
 	// println!("{:?}", l1[0]);
 
