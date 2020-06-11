@@ -5,7 +5,7 @@ fn main() {
 	let d = '\u{2571}';
 	let v = '\u{2502}';
 
-	let mut l1: [(i32, i32, i32, char, bool); 4] = [(2, 8, 1, s, false), (1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false)];  // pas le choix, il faut renseigner le step.
+	let mut l1: [(i32, i32, i32, char, bool); 4] = [(2, 8, 1, s, false), (1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false)];
 	let mut l2: [(i32, i32, i32, char, bool); 5] = [(1, 7, 1, s, false), (1, 1, 1, d, false), (4, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
 	let mut l3: [(i32, i32, i32, char, bool); 5] = [(1, 0, 1, s, false), (1, 1, 1, d, false), (4, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
 	let l4 = [(1, r), (4, f), (1, r), (1, s), (1, v)];
@@ -17,14 +17,10 @@ fn main() {
 
 	let mut vecteur: Vec<String> = Vec::new();
 
-	// plafond .1 : i.rev()
-	// mouvement .0 : n
-	
-
 	fn pl2(arr: &mut [(i32, i32, i32, char, bool)], vecteur: &mut Vec<String>) {
 		let mut line = String::new();
 		for tuple in arr.iter_mut() {	
-			println!("{:?}", tuple);
+			// println!("{:?}", tuple);
 
 			let (mut mouvement, plafond, step, c, starter) = *tuple; 
 			if starter {
@@ -63,8 +59,8 @@ fn main() {
 			// mais aussi les valeurs des cubes à venir.
 		// }
 		for i in (0..n).rev() {
-			l3[0].1 = i;
-			l3[0].0 = n;
+			l3[0].1 = i + 1; 						// plafond descendant
+			l3[0].0 = n;						// mouvement moutant
 			pl2(&mut l3, &mut vecteur);
 			// l3[0].4 = false;
 			
