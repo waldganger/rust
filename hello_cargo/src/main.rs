@@ -7,7 +7,7 @@ fn main() {
 
 	let mut l1: [(i32, i32, i32, char, bool); 4] = [(2, 8, 1, s, false), (1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false)];
 	let mut l2: [(i32, i32, i32, char, bool); 5] = [(1, 7, 1, s, false), (1, 1, 1, d, false), (4, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
-	let mut l3: [(i32, i32, i32, char, bool); 5] = [(1, 0, 1, s, false), (1, 1, 1, d, false), (4, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
+	let mut l3: [(i32, i32, i32, char, bool); 5] = [(1, 0, 1, s, false), (1, 1, 1, d, false), (8, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
 	let l4 = [(1, r), (4, f), (1, r), (1, s), (1, v)];
 	let l5_fantome = [(0, v), (0, s), (0, v), (0, s), (0, v)];
 	let l6 = [(1, v), (4, s), (1, v), (1, s), (1, r)];
@@ -24,10 +24,10 @@ fn main() {
 
 			let (mut mouvement, plafond, step, c, starter) = *tuple; 
 			if starter {
-				if mouvement > plafond {
-				tuple.0 = plafond;
-				mouvement = tuple.0;
-				println!("Limitation du mouvement à {}", mouvement);
+				if mouvement >= plafond {
+				tuple.0 = plafond - step;
+				mouvement = tuple.1;
+				// println!("Limitation du mouvement à {}", mouvement);
 				}
 				c_push(mouvement, c, &mut line);
 				tuple.0 += step;
@@ -53,30 +53,29 @@ fn main() {
 	for n in 0..7 {
 		pl2(&mut l1, &mut vecteur);
 		pl2(&mut l2, &mut vecteur);
-		// if n > 0 {
-			// départ de la boucle : l2[0].0
-			// puis application valeur fixes pour générer non seulement les valeurs du cube en cours
-			// mais aussi les valeurs des cubes à venir.
-		// }
+
+		// routine spécifique pour lignes diag à la suite
 		for i in (0..n).rev() {
+			
 			l3[0].1 = i + 1; 						// plafond descendant
 			l3[0].0 = n;						// mouvement moutant
+			l3[2].0 = (n+1) * l3[2].2;
+			println!("{:?}", l3[2]);
 			pl2(&mut l3, &mut vecteur);
+			
 			// l3[0].4 = false;
 			
 		}
 	}
 
-	// 	for n in 0..7 {
-	// 	pl2(&mut l2, &mut vecteur);
-	// }
 	
 
 	for s in vecteur {
 		println!("{}", s);
 	}
+	
 
-	println!("{:?}", l1[0]);
+	// println!("{:?}", l1[0]);
 
 	// for n in 0..7 {
 	// 	// let s = pl2(&l1);
