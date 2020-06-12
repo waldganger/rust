@@ -8,7 +8,7 @@ fn main() {
 	let mut l1: [(i32, i32, i32, char, bool); 4] = [(2, 8, 1, s, false), (1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false)];
 	let mut l2: [(i32, i32, i32, char, bool); 5] = [(1, 7, 1, s, false), (1, 1, 1, d, false), (4, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
 	let mut l3: [(i32, i32, i32, char, bool); 6] = [(1, 0, 1, s, false), (1, 1, 1, d, false), (8, 28, 4, s, false), (1, 1, 1, d, false), (0, 0, 0, s, false), (1, 1, 1, v, false)];
-	let l4 = [(1, r), (4, f), (1, r), (1, s), (1, v)];
+	let mut l4: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false), (1, 7, 1, s, false), (1, 1, 1, v, false)];
 	let l5_fantome = [(0, v), (0, s), (0, v), (0, s), (0, v)];
 	let l6 = [(1, v), (4, s), (1, v), (1, s), (1, r)];
 	let l7_fantome = [(1, v), (4, s), (1, v), (0, s), (1, d)];
@@ -82,8 +82,10 @@ fn main() {
 			
 		}
 			// réinitialisation du tuple l3[4]
-			l3[4].0 = 0;
-			l3[4].1 = 0;
+		l3[4].0 = 0;
+		l3[4].1 = 0;
+
+		pl2(&mut l4, &mut vecteur);
 
 	}
 	for s in vecteur {
