@@ -7,7 +7,7 @@ fn main() {
 
 	let mut l1: [(i32, i32, i32, char, bool); 4] = [(2, 8, 1, s, false), (1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false)];
 	let mut l2: [(i32, i32, i32, char, bool); 5] = [(1, 7, 1, s, false), (1, 1, 1, d, false), (4, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
-	let mut l3: [(i32, i32, i32, char, bool); 5] = [(1, 0, 1, s, false), (1, 1, 1, d, false), (8, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
+	let mut l3: [(i32, i32, i32, char, bool); 6] = [(1, 0, 1, s, false), (1, 1, 1, d, false), (8, 28, 4, s, false), (1, 1, 1, d, false), (0, 0, 0, s, false), (1, 1, 1, v, false)];
 	let l4 = [(1, r), (4, f), (1, r), (1, s), (1, v)];
 	let l5_fantome = [(0, v), (0, s), (0, v), (0, s), (0, v)];
 	let l6 = [(1, v), (4, s), (1, v), (1, s), (1, r)];
@@ -29,8 +29,10 @@ fn main() {
 				mouvement = tuple.1;
 				// println!("Limitation du mouvement à {}", mouvement);
 				}
+
 				c_push(mouvement, c, &mut line);
 				tuple.0 += step;
+
 			} else {
 				c_push(mouvement, c, &mut line);
 				tuple.4 = true;
@@ -50,22 +52,39 @@ fn main() {
 	}
 
 	// boucle finale d'affichage
+
+	// pour chaque carré
 	for n in 0..7 {
 		pl2(&mut l1, &mut vecteur);
 		pl2(&mut l2, &mut vecteur);
 
-		// routine spécifique pour lignes diag à la suite
+		// pour chaque ligne diag de chaque carré
 		for i in (0..n).rev() {
-			
+			// espace
 			l3[0].1 = i + 1; 						// plafond descendant
-			l3[0].0 = n;						// mouvement moutant
+			l3[0].0 = n;						// mouvement montant
+
+			// espaces centraux
 			l3[2].0 = (n+1) * l3[2].2;
-			println!("{:?}", l3[2]);
+
+			// espaces finaux
+
+			l3[4].0 += 1 ;
+			l3[4].1 = n ;
+			
+			
+
+			// l3[4].0 = n - 2 ;
+			println!("{:?}", l3[4]);
 			pl2(&mut l3, &mut vecteur);
 			
 			// l3[0].4 = false;
 			
 		}
+			// réinitialisation du tuple l3[4]
+			l3[4].0 = 0;
+			l3[4].1 = 0;
+
 	}
 	for s in vecteur {
 		println!("{}", s);
