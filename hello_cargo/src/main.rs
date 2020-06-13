@@ -106,6 +106,9 @@ fn main() {
 		println!("{}", s);
 	}
 
+	// test
+
+
 	// println!("{:?}", l1[0]);
 
 	// for n in 0..7 {
