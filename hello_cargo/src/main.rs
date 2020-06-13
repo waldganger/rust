@@ -10,7 +10,7 @@ fn main() {
 	let mut l3: [(i32, i32, i32, char, bool); 6] = [(1, 0, 1, s, false), (1, 1, 1, d, false), (8, 28, 4, s, false), (1, 1, 1, d, false), (0, 0, 0, s, false), (1, 1, 1, v, false)];
 	let mut l4: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false), (1, 7, 1, s, false), (1, 1, 1, v, false)];
 	let l5_fantome = [(0, v), (0, s), (0, v), (0, s), (0, v)];
-	let l6 = [(1, v), (4, s), (1, v), (1, s), (1, r)];
+	let mut l6: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, v, false), (4, 28, 4, s, false), (1, 1, 1, v, false), (1, 7, 1, s, false), (1, 1, 1, r, false)];
 	let l7_fantome = [(1, v), (4, s), (1, v), (0, s), (1, d)];
 	let l8 = [(1, r), (4, f), (1, r), (2, s)];
 	
@@ -72,20 +72,19 @@ fn main() {
 			l3[4].0 += 1 ;
 			l3[4].1 = n ;
 			
-			
-
-			// l3[4].0 = n - 2 ;
-			println!("{:?}", l3[4]);
 			pl2(&mut l3, &mut vecteur);
 			
-			// l3[0].4 = false;
-			
 		}
-			// réinitialisation du tuple l3[4]
+		// espaces finaux l3 --> réinitialisation du tuple l3[4]
 		l3[4].0 = 0;
 		l3[4].1 = 0;
 
 		pl2(&mut l4, &mut vecteur);
+
+		// lignes fantômes
+		// de -1 à 5 (0 lignes sur le 1er cube, 6 lignes sur le dernier cube)
+
+		pl2(&mut l6, &mut vecteur);
 
 	}
 	for s in vecteur {
