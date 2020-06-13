@@ -9,7 +9,8 @@ fn main() {
 	let mut l2: [(i32, i32, i32, char, bool); 5] = [(1, 7, 1, s, false), (1, 1, 1, d, false), (4, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
 	let mut l3: [(i32, i32, i32, char, bool); 6] = [(1, 0, 1, s, false), (1, 1, 1, d, false), (8, 28, 4, s, false), (1, 1, 1, d, false), (0, 0, 0, s, false), (1, 1, 1, v, false)];
 	let mut l4: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false), (1, 7, 1, s, false), (1, 1, 1, v, false)];
-	let l5_fantome = [(0, v), (0, s), (0, v), (0, s), (0, v)];
+	let mut l5_fantome: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, v, false), (4, 28, 0, s, false), (1, 1, 1, v, false), (1, 7, 0, s, false), (1, 1, 1, v, false)];
+	let copie_l5 = l5_fantome.clone();
 	let mut l6: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, v, false), (4, 28, 4, s, false), (1, 1, 1, v, false), (1, 7, 1, s, false), (1, 1, 1, r, false)];
 	let l7_fantome = [(1, v), (4, s), (1, v), (0, s), (1, d)];
 	let l8 = [(1, r), (4, f), (1, r), (2, s)];
@@ -83,8 +84,22 @@ fn main() {
 
 		// lignes fantômes
 		// de -1 à 5 (0 lignes sur le 1er cube, 6 lignes sur le dernier cube)
+		if n == 0 {
+			pl2(&mut l6, &mut vecteur);
+		} else {
+			l5_fantome[1].0 += 4;
+			l5_fantome[3].0 += 1;
+			for i in 0..n {					// valeur verticale doit rester la mm pendant boucle et ne changer qu'à la fin
+				println!("{:?}", l5_fantome[1]);
+				let temp = l5_fantome[1].0;
 
-		pl2(&mut l6, &mut vecteur);
+				pl2(&mut l5_fantome, &mut vecteur);
+
+				
+			}
+			pl2(&mut l6, &mut vecteur);
+		}
+		// l5_fantome = copie_l5;
 
 	}
 	for s in vecteur {
