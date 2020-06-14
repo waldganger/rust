@@ -12,7 +12,7 @@ fn main() {
 	let mut l5_fantome: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, v, false), (4, 28, 0, s, false), (1, 1, 1, v, false), (1, 7, 0, s, false), (1, 1, 1, v, false)];
 	let mut l6: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, v, false), (4, 28, 4, s, false), (1, 1, 1, v, false), (1, 7, 1, s, false), (1, 1, 1, r, false)];
 	let mut l7: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, v, false), (0, 28, 0, s, false), (1, 1, 1, v, false), (1, 1, 1, s, false), (1, 1, 1, d, false)];
-	let l8 = [(1, r), (4, f), (1, r), (2, s)];
+	let mut l8: [(i32, i32, i32, char, bool); 3] = [(1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false)];
 	
 
 	let mut vecteur: Vec<String> = Vec::new();
@@ -101,11 +101,13 @@ fn main() {
 			l7[3].1 = i ; 						// plafond descendant
 			l7[3].0 = n;						// mouvement montant
 
-			println!("{:?}", l7[3]);
+			// println!("{:?}", l7[3]);
 			pl2(&mut l7, &mut vecteur);
 		}
 
-		
+		pl2(&mut l8, &mut vecteur);
+
+		vecteur.push("".to_string());
 	}
 	for s in vecteur {
 		println!("{}", s);
