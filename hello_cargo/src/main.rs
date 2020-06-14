@@ -1,117 +1,195 @@
-fn main() {
-	let s = ' ';
-	let r = '\u{2588}';
-	let f = '\u{2500}';
-	let d = '\u{2571}';
-	let v = '\u{2502}';
+use std::fmt;
+enum Fbz {
+	Value(u64),
+	Fizz,
+	Buzz,
+	FizzBuzz,
+}
 
-	let mut l1: [(i32, i32, i32, char, bool); 4] = [(2, 8, 1, s, false), (1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false)];
-	let mut l2: [(i32, i32, i32, char, bool); 5] = [(1, 7, 1, s, false), (1, 1, 1, d, false), (4, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
-	let mut l3: [(i32, i32, i32, char, bool); 6] = [(1, 0, 1, s, false), (1, 1, 1, d, false), (8, 28, 4, s, false), (1, 1, 1, d, false), (0, 0, 0, s, false), (1, 1, 1, v, false)];
-	let mut l4: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false), (1, 7, 1, s, false), (1, 1, 1, v, false)];
-	let mut l5_fantome: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, v, false), (4, 28, 0, s, false), (1, 1, 1, v, false), (1, 7, 0, s, false), (1, 1, 1, v, false)];
-	let mut l6: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, v, false), (4, 28, 4, s, false), (1, 1, 1, v, false), (1, 7, 1, s, false), (1, 1, 1, r, false)];
-	let mut l7: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, v, false), (0, 28, 0, s, false), (1, 1, 1, v, false), (1, 1, 1, s, false), (1, 1, 1, d, false)];
-	let mut l8: [(i32, i32, i32, char, bool); 3] = [(1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false)];
+impl fmt::Display for Fbz {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+		match *self {
+			Fbz::Value(n) => write!(f, "{}", n),
+			Fbz::Fizz => write!(f, "Fizz"),
+			Fbz::Buzz => write!(f, "Buzz"),
+			Fbz::FizzBuzz => write!(f, "FizzBuzz"),
+		}
+	}
+}
+
+fn main() {
+	for n in 1..101 {
+		println!("{}", to_fbz(n));
+	}
+}
+
+fn to_fbz(x: u64) -> Fbz {
+	match x {
+		x if x % 15 == 0 => Fbz::FizzBuzz,
+		x if x % 5 == 0 => Fbz::Buzz,
+		x if x % 3 == 0 => Fbz::Fizz,
+		x => Fbz::Value(x),
+	}
+}
+
+// use std::env;
+
+// fn main() {
+// 	let args: Vec<String> = env::args().collect();
+
+// 	for el in args {
+// 		println!("{}", el);
+// 	}
+	// let liste = [1, 2, 3, 6, 5];
+	// let mot = ['a', 'b', 'c', 'e', 'd'];
+	// let mot2 = String::from("Antony");
+
+
+
+	// println!("{}", generic_largest(&liste));
+	// println!("{}", generic_largest(&mot));
+	// println!("{}", largest_char(mot2.as_str()));
+// }
+
+// fn largest (liste: &[i32]) -> i32 {
+// 	let mut largest = liste[0];
+// 	for &el in liste {
+// 		if el > largest {
+// 			largest = el;
+// 		}
+// 	}
+// 	largest
+// }
+
+// fn largest_char (liste: &[char]) -> char {
+// 	let mut largest = liste[0];
+// 	for &el in liste {
+// 		if el > largest {
+// 			largest = el;
+// 		}
+// 	}
+// 	largest
+// }
+// #[warn(dead_code)]
+// fn generic_largest<T: PartialOrd + Copy>(liste: &[T]) -> T {
+// 	let mut largest = liste[0];
+// 	for &el in liste {
+// 		if el > largest {
+// 			largest = el;
+// 		}
+// 	}
+// 	largest
+// }
+
+// fn main() {
+// 	let add_one = |nombre| { nombre + 1};
+
+// 	println!("{}", add_one(5));
+// }
+
+// fn main() {
+// 	let s = ' ';
+// 	let r = '\u{2588}';
+// 	let f = '\u{2500}';
+// 	let d = '\u{2571}';
+// 	let v = '\u{2502}';
+
+// 	let mut l1: [(i32, i32, i32, char, bool); 4] = [(2, 8, 1, s, false), (1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false)];
+// 	let mut l2: [(i32, i32, i32, char, bool); 5] = [(1, 7, 1, s, false), (1, 1, 1, d, false), (4, 28, 4, s, false), (1, 1, 1, d, false), (1, 1, 0, v, false)];
+// 	let mut l3: [(i32, i32, i32, char, bool); 6] = [(1, 0, 1, s, false), (1, 1, 1, d, false), (8, 28, 4, s, false), (1, 1, 1, d, false), (0, 0, 0, s, false), (1, 1, 1, v, false)];
+// 	let mut l4: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false), (1, 7, 1, s, false), (1, 1, 1, v, false)];
+// 	let mut l5_fantome: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, v, false), (4, 28, 0, s, false), (1, 1, 1, v, false), (1, 7, 0, s, false), (1, 1, 1, v, false)];
+// 	let mut l6: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, v, false), (4, 28, 4, s, false), (1, 1, 1, v, false), (1, 7, 1, s, false), (1, 1, 1, r, false)];
+// 	let mut l7: [(i32, i32, i32, char, bool); 5] = [(1, 1, 1, v, false), (0, 28, 0, s, false), (1, 1, 1, v, false), (1, 1, 1, s, false), (1, 1, 1, d, false)];
+// 	let mut l8: [(i32, i32, i32, char, bool); 3] = [(1, 1, 1, r, false), (4, 28, 4, f, false), (1, 1, 1, r, false)];
 	
 
-	let mut vecteur: Vec<String> = Vec::new();
+// 	let mut vecteur: Vec<String> = Vec::new();
 
-	fn pl2(arr: &mut [(i32, i32, i32, char, bool)], vecteur: &mut Vec<String>) {
-		let mut line = String::new();
-		for tuple in arr.iter_mut() {	
-			// println!("{:?}", tuple);
+// 	fn pl2(arr: &mut [(i32, i32, i32, char, bool)], vecteur: &mut Vec<String>) {
+// 		let mut line = String::new();
+// 		for tuple in arr.iter_mut() {	
 
-			let (mut mouvement, plafond, step, c, starter) = *tuple; 
-			if starter {
-				if mouvement >= plafond {
-				tuple.0 = plafond - step;
-				mouvement = tuple.1;
-				// println!("Limitation du mouvement à {}", mouvement);
-				}
+// 			let (mut mouvement, plafond, step, c, starter) = *tuple; 
+// 			if starter {
+// 				if mouvement >= plafond {
+// 				tuple.0 = plafond - step;
+// 				mouvement = tuple.1;
+// 				}
 
-				c_push(mouvement, c, &mut line);
-				tuple.0 += step;
+// 				c_push(mouvement, c, &mut line);
+// 				tuple.0 += step;
 
-			} else {
-				c_push(mouvement, c, &mut line);
-				tuple.4 = true;
-				tuple.0 += step;
-			}
+// 			} else {
+// 				c_push(mouvement, c, &mut line);
+// 				tuple.4 = true;
+// 				tuple.0 += step;
+// 			}
 			
 
-		}
-		vecteur.push(line.clone());
+// 		}
+// 		vecteur.push(line.clone());
 
-	}
+// 	}
 
-	fn c_push(mouvement: i32, character: char, s: &mut String) {
-		for i in 0..mouvement {
-			s.push(character)
-		}
-	}
+// 	fn c_push(mouvement: i32, character: char, s: &mut String) {
+// 		for i in 0..mouvement {
+// 			s.push(character)
+// 		}
+// 	}
 
-	// boucle finale d'affichage
+// 	for n in 0..7 {
+// 		pl2(&mut l1, &mut vecteur);
+// 		pl2(&mut l2, &mut vecteur);
 
-	// pour chaque carré
-	for n in 0..7 {
-		pl2(&mut l1, &mut vecteur);
-		pl2(&mut l2, &mut vecteur);
+// 		for i in (0..n).rev() {
 
-		// pour chaque ligne diag de chaque carré
-		for i in (0..n).rev() {
-			// espace
-			l3[0].1 = i + 1; 						// plafond descendant
-			l3[0].0 = n;						// mouvement montant
+// 			l3[0].1 = i + 1; 
+// 			l3[0].0 = n;
 
-			// espaces centraux
-			l3[2].0 = (n+1) * l3[2].2;
+// 			l3[2].0 = (n+1) * l3[2].2;
 
-			// espaces finaux
-
-			l3[4].0 += 1 ;
-			l3[4].1 = n ;
+// 			l3[4].0 += 1 ;
+// 			l3[4].1 = n ;
 			
-			pl2(&mut l3, &mut vecteur);
+// 			pl2(&mut l3, &mut vecteur);
 			
-		}
-		// espaces finaux l3 --> réinitialisation du tuple l3[4]
-		l3[4].0 = 0;
-		l3[4].1 = 0;
+// 		}
 
-		pl2(&mut l4, &mut vecteur);
+// 		l3[4].0 = 0;
+// 		l3[4].1 = 0;
 
-		// lignes fantômes
-		// de -1 à 5 (0 lignes sur le 1er cube, 6 lignes sur le dernier cube)
-		if n == 0 {
-			pl2(&mut l6, &mut vecteur);
-		} else {
-			l5_fantome[1].0 += 4;
-			l5_fantome[3].0 += 1;
-			for i in 0..n {					// valeur verticale doit rester la mm pendant boucle et ne changer qu'à la fin
-				pl2(&mut l5_fantome, &mut vecteur);
-			}
-			pl2(&mut l6, &mut vecteur);
-		}
+// 		pl2(&mut l4, &mut vecteur);
 
-		l7[1].0 += 4;
-		for i in (0..n + 1).rev() {
-			// espace
+// 		if n == 0 {
+// 			pl2(&mut l6, &mut vecteur);
+// 		} else {
+// 			l5_fantome[1].0 += 4;
+// 			l5_fantome[3].0 += 1;
+// 			for i in 0..n {
+// 				pl2(&mut l5_fantome, &mut vecteur);
+// 			}
+// 			pl2(&mut l6, &mut vecteur);
+// 		}
+
+// 		l7[1].0 += 4;
+// 		for i in (0..n + 1).rev() {
 			
-			l7[3].1 = i ; 						// plafond descendant
-			l7[3].0 = n;						// mouvement montant
+// 			l7[3].1 = i ; 						// plafond descendant
+// 			l7[3].0 = n;						// mouvement montant
 
-			// println!("{:?}", l7[3]);
-			pl2(&mut l7, &mut vecteur);
-		}
+// 			// println!("{:?}", l7[3]);
+// 			pl2(&mut l7, &mut vecteur);
+// 		}
 
-		pl2(&mut l8, &mut vecteur);
+// 		pl2(&mut l8, &mut vecteur);
 
-		vecteur.push("".to_string());
-	}
-	for s in vecteur {
-		println!("{}", s);
-	}
+// 		vecteur.push("".to_string());
+// 	}
+// 	for s in vecteur {
+// 		println!("{}", s);
+// 	}
+// 	}
 
 	// test
 
@@ -181,7 +259,7 @@ fn main() {
 	// 	let mut l2 = String::new();
 	// }
 	// assert_eq!(flat_line, 28);
-}
+
 
 // fn main() {
 // 	for i in 0..10 {
