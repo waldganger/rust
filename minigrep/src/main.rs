@@ -4,9 +4,9 @@ use std::process;
 use minigrep::Config;
 
 fn main() {
-    let args:Vec<String> = env::args().collect();
+    // let args:Vec<String> = env::args().collect();
 
-    let config = Config::new(&args).unwrap_or_else(|erreur| {
+    let config = Config::new(env::args()).unwrap_or_else(|erreur| {
         eprintln!("Erreur : {}", erreur);
         
         process::exit(1);
