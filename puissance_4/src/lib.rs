@@ -1,3 +1,10 @@
+// use std::io;
+// use std::io::Write;
+// use termcolor::{Color, ColorChoice, ColorSpec, StandardStream, WriteColor};
+
+use std::io::{self, Write};
+use termcolor::{StandardStream, Color, ColorChoice, ColorSpec, WriteColor};
+
 pub enum Case {
     Pleine(Couleur),
     Vide,
@@ -28,7 +35,6 @@ pub fn run() {
     tableau[3][5] = Case::Pleine(Couleur::Jaune);
     aff_tableau(&mut tableau);
     
-    
 }
 
 pub fn aff_tableau(&mut tableau: &mut[[Case;7];6]) {
@@ -39,13 +45,36 @@ pub fn aff_tableau(&mut tableau: &mut[[Case;7];6]) {
         for case in cases {
         match case {
             Case::Vide => print!("Vide "),
-            Case::Pleine(Couleur::Jaune) => print!("Jaune "),
-            Case::Pleine(Couleur::Rouge) => print!("Rouge "),
+            Case::Pleine(Couleur::Jaune) => write_yellow()
+            .unwrap_or_else(|err| {println!("{}", err);
+                }),
+            Case::Pleine(Couleur::Rouge) => write_red()
+            .unwrap_or_else(|err| {println!("{}", err)}),
         }
         }
         println!();
     }
 }
+
+
+fn write_yellow() -> io::Result<()> {
+    let mut stdout = StandardStream::stdout(ColorChoice::Always);
+    stdout.set_color(ColorSpec::new().set_fg(Some(Color::Yellow)))?;
+    write!(&mut stdout, "jaune")?;
+    stdout.reset()
+}
+
+fn write_red() -> io::Result<()> {
+    let mut stdout = StandardStream::stdout(ColorChoice::Always);
+    stdout.set_color(ColorSpec::new().set_fg(Some(Color::Red)))?;
+    write!(&mut stdout, "rouge")?;
+    stdout.reset()
+}
+
+// fn reset_stdout() -> io::Result<()> {
+//     let mut stdout = StandardStream::stdout(ColorChoice::Always);
+//     stdout.reset()
+// }
 
 // mod jeu {
 //     const COLONNES: usize = 7;
