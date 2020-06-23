@@ -1,0 +1,1 @@
+C:\Users\antony\Nextcloud\personnel\rust\puissance_4\target\debug\puissance_4.exe: C:\Users\antony\Nextcloud\personnel\rust\puissance_4\src\lib.rs C:\Users\antony\Nextcloud\personnel\rust\puissance_4\src\main.rs
