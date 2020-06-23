@@ -33,6 +33,7 @@ pub fn run() {
     let mut tableau = [[Case::Vide; 7]; 6];
     tableau[3][4] = Case::Pleine(Couleur::Rouge);
     tableau[3][5] = Case::Pleine(Couleur::Jaune);
+    put_jeton(&mut tableau, 0);
     aff_tableau(&mut tableau);
     println!("{}", tableau.len());
     
@@ -85,14 +86,18 @@ fn print_jeton_rouge() {
 }
 
 // penser à ajouter player en arg, pour décompter le nombre de jetons
-fn put_jeton(&mut tableau: &mut[[Case;7]; 6], col: usize) {
-
+fn put_jeton(tableau: &mut[[Case;7]; 6], col: usize) {
+    // let test = tableau;
+    let ligne = glisse_jeton(tableau, 0).expect("erreur");
+    tableau[ligne][col] = Case::Pleine(Couleur::Jaune);
 }
 
+
+
 /// vérifie si on peut mettre un jeton dans la colonne. Si c'est le cas, renvoit la position du jeton ou une erreur.
-fn glisse_jeton(&mut tableau: &mut[[Case;7]; 6], col: usize) -> Result<usize, i8> {
+fn glisse_jeton(tableau: &[[Case;7]; 6], col: usize) -> Result<usize, i8> {
     let mut resultat: Result<usize, i8> = Err(-1);
-    let nbre_lignes = tableau[0].len();
+    let nbre_lignes = tableau[0].len() - 1;
 
     // D'abord, on vérifie qu'il y a de la place pour mettre un jeton
     // Si la colonne est pleine, on retourne une erreur à put_jeton
@@ -101,9 +106,9 @@ fn glisse_jeton(&mut tableau: &mut[[Case;7]; 6], col: usize) -> Result<usize, i8
     }
 
     for i in (0..nbre_lignes).rev() {
-        match tableau[i][col] {
-        Case::Pleine(Couleur) =>  () /*{resultat = Ok(i - 1)}*/,
-        Case::Vide => {resultat = Ok(i)},
+        match tableau[nbre_lignes - 1][col] {
+        Case::Pleine(Couleur) => () /*{resultat = Ok(i - 1)}*/,
+        Case::Vide => {resultat = Ok(nbre_lignes - 1)},
     }
 
     }
