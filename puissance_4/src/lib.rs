@@ -34,6 +34,7 @@ pub fn run() {
     tableau[3][4] = Case::Pleine(Couleur::Rouge);
     tableau[3][5] = Case::Pleine(Couleur::Jaune);
     aff_tableau(&mut tableau);
+    println!("{}", tableau.len());
     
 }
 
@@ -44,13 +45,10 @@ pub fn aff_tableau(&mut tableau: &mut[[Case;7];6]) {
         let cases = ligne.iter();
         for case in cases {
         match case {
-            Case::Vide => print!("Vide "),
-            Case::Pleine(Couleur::Jaune) => write_yellow()
-            .unwrap_or_else(|err| {println!("{}", err);
-                }),
-            Case::Pleine(Couleur::Rouge) => write_red()
-            .unwrap_or_else(|err| {println!("{}", err)}),
-        }
+            Case::Vide => print!("[ ]"),
+            Case::Pleine(Couleur::Jaune) => print_jeton_jaune(),
+            Case::Pleine(Couleur::Rouge) => print_jeton_rouge(),
+            }
         }
         println!();
     }
@@ -60,100 +58,54 @@ pub fn aff_tableau(&mut tableau: &mut[[Case;7];6]) {
 fn write_yellow() -> io::Result<()> {
     let mut stdout = StandardStream::stdout(ColorChoice::Always);
     stdout.set_color(ColorSpec::new().set_fg(Some(Color::Yellow)))?;
-    write!(&mut stdout, "jaune")?;
+    write!(&mut stdout, "O")?;
+
     stdout.reset()
+}
+
+fn print_jeton_jaune() {
+    print!("[");
+    write_yellow()
+    .unwrap_or_else(|err| {println!("{}", err);});
+    print!("]");
 }
 
 fn write_red() -> io::Result<()> {
     let mut stdout = StandardStream::stdout(ColorChoice::Always);
     stdout.set_color(ColorSpec::new().set_fg(Some(Color::Red)))?;
-    write!(&mut stdout, "rouge")?;
+    write!(&mut stdout, "O")?;
     stdout.reset()
 }
 
-// fn reset_stdout() -> io::Result<()> {
-//     let mut stdout = StandardStream::stdout(ColorChoice::Always);
-//     stdout.reset()
-// }
+fn print_jeton_rouge() {
+    print!("[");
+    write_red()
+    .unwrap_or_else(|err| {println!("{}", err);});
+    print!("]");
+}
 
-// mod jeu {
-//     const COLONNES: usize = 7;
-//     const LIGNES: usize = 6;
+// penser à ajouter player en arg, pour décompter le nombre de jetons
+fn put_jeton(&mut tableau: &mut[[Case;7]; 6], col: usize) {
 
-// // #[derive(Copy, Clone)]
-// #[derive(Debug)]
-//     pub enum Case {
-//         Vide,
-//         Pleine(Couleur),
-//     }
-// #[derive(Debug)]
-//     pub enum Couleur {
-//         Jaune,
-//         Rouge,
-//     }
+}
 
-//     impl Copy for Case { }
-//     impl Clone for Case {
-//         fn clone(&self) -> Case {
-//             *self
-//         }
-//     }
+/// vérifie si on peut mettre un jeton dans la colonne. Si c'est le cas, renvoit la position du jeton ou une erreur.
+fn glisse_jeton(&mut tableau: &mut[[Case;7]; 6], col: usize) -> Result<usize, i8> {
+    let mut resultat: Result<usize, i8> = Err(-1);
+    let nbre_lignes = tableau[0].len();
 
-//      impl Copy for Couleur { }
-//     impl Clone for Couleur {
-//         fn clone(&self) -> Couleur {
-//             *self
-//         }
-//     }
+    // D'abord, on vérifie qu'il y a de la place pour mettre un jeton
+    // Si la colonne est pleine, on retourne une erreur à put_jeton
+    if let Case::Pleine(Couleur) = tableau[5][col] {
+        return Err(-1);
+    }
 
-//     use std::fmt;
-//     impl fmt::Display for Case {
-//         fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//             match *self {
-//                 Vide => write!(f, ""),
-//                 Case::Pleine(Couleur::Jaune) => write!(f, "Jaune"),
-//                 Case::Pleine(Couleur::Rouge) => write!(f, "Rouge"),
-//             }
-//         }
-//     }
+    for i in (0..nbre_lignes).rev() {
+        match tableau[i][col] {
+        Case::Pleine(Couleur) =>  () /*{resultat = Ok(i - 1)}*/,
+        Case::Vide => {resultat = Ok(i)},
+    }
 
-    
-//     // pub struct PlateauDeJeu {
-//     //     nombre_cases: usize,
-//     //     pub plateau: [[Couleur; COLONNES]; LIGNES],
-//     // }
-
-//     // pub fn build_plateau() -> PlateauDeJeu {
-
-//     //     PlateauDeJeu {
-//     //         nombre_cases: COLONNES * LIGNES,
-//     //         plateau: [[Couleur::Jaune; COLONNES]; LIGNES],
-//     //     }
-//     // }
-
-//     pub struct Joueur {
-//         couleur: Case,
-//         nombre_jetons: u8,
-//     }
-
-
-// }
-
-// pub fn run() {
-//     // let mut board = jeu::build_plateau();
-//     // let plateau = board.plateau;
-
-//     // let cases = plateau.iter();
-//     // for case in cases {
-//     //     println!("{}", case);
-//     const COLONNES: usize = 7;
-//     const LIGNES: usize = 6;
- 
-//     let mut board = [[jeu::Case::Pleine(jeu::Couleur::Jaune); COLONNES]; LIGNES];
-
-//     let cases = board.iter();
-//     for case in cases{
-//         println!("{:?}", case);
-//     }
-//     println!("{}", jeu::Case::Pleine(jeu::Couleur::Rouge));
-//     }
+    }
+    resultat
+}
