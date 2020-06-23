@@ -89,13 +89,13 @@ fn put_jeton(&mut tableau: &mut[[Case;7]; 6], col: usize) {
 
 }
 
-fn glisse_jeton(&mut tableau: &mut[[Case;7]; 6], col: usize) -> (usize, usize) {
-    let mut resultat: (usize, usize) = (0, 0);
+fn glisse_jeton(&mut tableau: &mut[[Case;7]; 6], col: usize) -> Result<(usize, usize), i8> {
+    let mut resultat: Result<(usize, usize), i8> = Err(-1);
     let nbre_lignes = tableau[0].len();
     for i in 0..nbre_lignes {
         match tableau[i][col] {
-            Case::Pleine(Couleur) => {resultat = (i - 1, col)},
-            Case::Vide => {resultat = (4, 4)},
+            Case::Pleine(Couleur) => {resultat = Ok((i - 1, col))},
+            Case::Vide => {resultat = Err(-1)},
         }
     }
     resultat
