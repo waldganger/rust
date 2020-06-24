@@ -34,6 +34,9 @@ pub fn run() {
     tableau[3][4] = Case::Pleine(Couleur::Rouge);
     tableau[3][5] = Case::Pleine(Couleur::Jaune);
     put_jeton(&mut tableau, 0);
+    put_jeton(&mut tableau, 0);
+    put_jeton(&mut tableau, 0);
+    put_jeton(&mut tableau, 0);
     aff_tableau(&mut tableau);
     println!("{}", tableau.len());
     
@@ -89,28 +92,41 @@ fn print_jeton_rouge() {
 fn put_jeton(tableau: &mut[[Case;7]; 6], col: usize) {
     // let test = tableau;
     let ligne = glisse_jeton(tableau, 0).expect("erreur");
-    tableau[ligne][col] = Case::Pleine(Couleur::Jaune);
+    tableau[ligne][col] = Case::Pleine(Couleur::Rouge);
 }
 
 
 
 /// vérifie si on peut mettre un jeton dans la colonne. Si c'est le cas, renvoit la position du jeton ou une erreur.
 fn glisse_jeton(tableau: &[[Case;7]; 6], col: usize) -> Result<usize, i8> {
-    let mut resultat: Result<usize, i8> = Err(-1);
+    let mut resultat: Result<usize, i8> = Err(0);
     let nbre_lignes = tableau[0].len() - 1;
 
     // D'abord, on vérifie qu'il y a de la place pour mettre un jeton
     // Si la colonne est pleine, on retourne une erreur à put_jeton
-    if let Case::Pleine(Couleur) = tableau[5][col] {
-        return Err(-1);
+    // if let Case::Pleine(Couleur) = tableau[0][col] {
+    //     return Err(-1);
+    // }
+    // if tableau[0][col] == Case::Pleine(Couleur) {
+    //     return Err(-1);
+    // }
+    match tableau[0][col] {
+        Case::Pleine(Couleur::Rouge) => {println!("pleine Rouge !"); return Err(-1)},
+        Case::Pleine(Couleur::Jaune) => {println!("pleine Jaune !"); return Err(-1)},
+        Case::Vide => (),
+    }
+    println!("exec");
+    
+        for i in (0..nbre_lignes).rev() {
+            match tableau[i][col] {
+            Case::Pleine(Couleur) => {println!("Plein, je passe"); ()},
+            Case::Vide => {println!("{}", i); resultat = Ok(i); return resultat;},
+        
     }
 
-    for i in (0..nbre_lignes).rev() {
-        match tableau[nbre_lignes - 1][col] {
-        Case::Pleine(Couleur) => () /*{resultat = Ok(i - 1)}*/,
-        Case::Vide => {resultat = Ok(nbre_lignes - 1)},
+    
     }
-
-    }
+    println!("dernier renvoi, i = {:?}", resultat);
     resultat
 }
+
