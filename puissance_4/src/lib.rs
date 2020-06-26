@@ -24,7 +24,7 @@ impl Clone for Couleur {
         *self
     }
 }
-
+#[derive(Clone, Copy)]
 pub struct Joueur {
     couleur : Couleur,
     coups_restants : u8,
@@ -36,21 +36,36 @@ pub fn nouveau_joueur(coul: Couleur) -> Joueur {
         coups_restants: 21,
     }
 }
+#[derive(Clone, Copy)]
+struct Participants {
+    joueur_jaune: Joueur,
+    joueur_rouge: Joueur,
+}
+
+fn new_participants() -> Participants {
+    Participants {
+        joueur_jaune: nouveau_joueur(Couleur::Jaune),
+        joueur_rouge: nouveau_joueur(Couleur::Rouge),
+    }
+}
+
 
 
 pub fn run() {
     let mut tableau = [[Case::Vide; 7]; 6];
+    let mut participants = new_participants();
+    // let mut participants: [Joueur; 2] = [nouveau_joueur(Couleur::Jaune), nouveau_joueur(Couleur::Rouge)];
     // tableau[3][4] = Case::Pleine(Couleur::Rouge);
     // tableau[3][5] = Case::Pleine(Couleur::Jaune);
-    let mut joueur_jaune = nouveau_joueur(Couleur::Jaune);
-    put_jeton(&mut tableau, 0, joueur_jaune.couleur);
-    put_jeton(&mut tableau, 0, Couleur::Rouge);
-    put_jeton(&mut tableau, 0, Couleur::Rouge);
-    put_jeton(&mut tableau, 0, Couleur::Rouge);
-    put_jeton(&mut tableau, 0, Couleur::Rouge);
-    put_jeton(&mut tableau, 0, Couleur::Rouge);
-    put_jeton(&mut tableau, 1, joueur_jaune.couleur);
-    put_jeton(&mut tableau, 6, joueur_jaune.couleur);
+    // let mut joueur_jaune = nouveau_joueur(Couleur::Jaune);
+    put_jeton(&mut tableau, 0, participants.joueur_jaune);
+    put_jeton(&mut tableau, 0, participants.joueur_rouge);
+    put_jeton(&mut tableau, 0, participants.joueur_jaune);
+    put_jeton(&mut tableau, 0, participants.joueur_rouge);
+    put_jeton(&mut tableau, 0, participants.joueur_jaune);
+    put_jeton(&mut tableau, 0, participants.joueur_rouge);
+    put_jeton(&mut tableau, 1, participants.joueur_jaune);
+    put_jeton(&mut tableau, 6, participants.joueur_rouge);
     
     aff_tableau(&mut tableau);
     println!("{}", tableau.len());
@@ -104,10 +119,14 @@ fn print_jeton_rouge() {
 }
 
 // penser à ajouter player en arg, pour décompter le nombre de jetons
-fn put_jeton(tableau: &mut[[Case;7]; 6], col: usize, coul: Couleur) {
+/// Place un jeton sur le tableau et le retranche au stock du joueur.
+fn put_jeton(tableau: &mut[[Case;7]; 6], col: usize, joueur: Joueur) {
     // let test = tableau;
     let ligne = glisse_jeton(tableau, col).expect("erreur");
-    tableau[ligne][col] = Case::Pleine(coul);
+    tableau[ligne][col] = Case::Pleine(joueur.couleur);
+    // match coul {
+    //     Couleur::Jaune => parti
+    // }
 }
 
 
