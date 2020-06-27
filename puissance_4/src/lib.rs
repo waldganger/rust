@@ -42,38 +42,67 @@ impl Joueur {
     pub fn moins_un_jeton(&self) {
         self.nbre_jetons.set(self.nbre_jetons.get() - 1);
     }
+
 }
 
 
 struct Participants {
     joueur_jaune: Joueur,
     joueur_rouge: Joueur,
+    compte_tour: Cell<u8>,
 }
 
-fn new_participants() -> Participants {
-    Participants {
-        joueur_jaune: Joueur::nouveau_joueur(Couleur::Jaune),
-        joueur_rouge: Joueur::nouveau_joueur(Couleur::Rouge),
+
+impl Participants {
+    pub fn new_participants() -> Participants {
+            Participants {
+                joueur_jaune: Joueur::nouveau_joueur(Couleur::Jaune),
+                joueur_rouge: Joueur::nouveau_joueur(Couleur::Rouge),
+                compte_tour: Cell::new(0),
+            }
+        }
+    
+    pub fn inc_tour(&self) {
+        self.compte_tour.set(self.compte_tour.get() + 1);
     }
 }
 
 
 
+
+
+
+
+/* 
+crée joueurs
+affiche tableau -- colonnes -- à qui le tour
+input
+put_jeton
+check: gagnant -- stalemate
+
+*/
+
 pub fn run() {
     let mut tableau = [[Case::Vide; 7]; 6];
-    let participants = new_participants();
+    let participants = Participants::new_participants();
 
-    put_jeton(&mut tableau, 0, &participants.joueur_jaune);
-    put_jeton(&mut tableau, 0, &participants.joueur_rouge);
-    put_jeton(&mut tableau, 0, &participants.joueur_jaune);
-    put_jeton(&mut tableau, 0, &participants.joueur_rouge);
-    put_jeton(&mut tableau, 0, &participants.joueur_jaune);
-    put_jeton(&mut tableau, 0, &participants.joueur_rouge);
-    put_jeton(&mut tableau, 1, &participants.joueur_jaune);
-    put_jeton(&mut tableau, 6, &participants.joueur_rouge);
+
+    // iplementer function de saisie utilisateur 
+    while check_partie_continue(&participants.joueur_jaune, &participants.joueur_rouge) {
+
+        if participants.compte_tour.get() % 2 == 0 {
+        put_jeton(&mut tableau, 0, &participants.joueur_jaune);
+        } else {
+            put_jeton(&mut tableau, 0, &participants.joueur_rouge);
+        }
+        participants.inc_tour();
+        println!("Tour N°: {:?}", participants.compte_tour);
+            
+        aff_tableau(&mut tableau);
+        println!("{:?}", &participants.joueur_jaune.nbre_jetons);
+    }
+    println!("Fin de partie");
     
-    aff_tableau(&mut tableau);
-    println!("{:?}", &participants.joueur_jaune.nbre_jetons);
     
 }
 
@@ -91,7 +120,9 @@ pub fn aff_tableau(&mut tableau: &mut[[Case;7];6]) {
         }
         println!();
     }
+    println!("[1][2][3][4][5][6][7]");
 }
+
 
 
 fn write_yellow() -> io::Result<()> {
@@ -123,6 +154,13 @@ fn print_jeton_rouge() {
     print!("]");
 }
 
+fn check_partie_continue(joueur_jaune: &Joueur, joueur_rouge: &Joueur) -> bool {
+    if joueur_jaune.nbre_jetons.get() > 1 && joueur_rouge.nbre_jetons.get() > 1 {
+        true
+    } else {
+        false
+    }
+}
 
 /// Place un jeton sur le tableau et le retranche au stock du joueur.
 fn put_jeton(tableau: &mut[[Case;7]; 6], col: usize, joueur: &Joueur) {
@@ -131,7 +169,7 @@ fn put_jeton(tableau: &mut[[Case;7]; 6], col: usize, joueur: &Joueur) {
     tableau[ligne][col] = Case::Pleine(joueur.couleur);
 
     match joueur.couleur {
-        Couleur::Jaune => joueur.moins_un_jeton(),
+        Couleur::Jaune => {joueur.moins_un_jeton();},
         Couleur::Rouge => joueur.moins_un_jeton(),
     }
 }
@@ -144,18 +182,18 @@ fn glisse_jeton(tableau: &[[Case;7]; 6], col: usize) -> Result<usize, i8> {
     let nbre_lignes = tableau[0].len() - 1;
 
     match tableau[0][col] {
-        Case::Pleine(_) => {println!("pleine Rouge !"); return Err(-1)},
+        Case::Pleine(_) => return Err(-1),
         Case::Vide => (),
     }
 
         for i in (0..nbre_lignes).rev() {
             match tableau[i][col] {
-            Case::Pleine(_) => {println!("Plein, je passe"); ()},
-            Case::Vide => {println!("{}", i); resultat = Ok(i); return resultat;},
+            Case::Pleine(_) =>  (),
+            Case::Vide => {resultat = Ok(i); return resultat;},
         
         }
     }
-    println!("dernier renvoi, i = {:?}", resultat);
+    // println!("dernier renvoi, i = {:?}", resultat);
     resultat
 }
 
