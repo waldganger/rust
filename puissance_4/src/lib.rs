@@ -1,6 +1,8 @@
 use std::io::{self, Write};
 use termcolor::{StandardStream, Color, ColorChoice, ColorSpec, WriteColor};
 use std::cell::Cell;                    //  enables mutation inside an immutable struct
+use std::process;
+use std::error::Error;
 
 pub enum Case {
     Pleine(Couleur),
@@ -74,10 +76,10 @@ impl Participants {
 
 
 /* 
-crée joueurs
+crée joueurs -- OK
 affiche tableau -- colonnes -- à qui le tour
-input
-put_jeton
+input -- OK
+put_jeton -- OK
 check: gagnant -- stalemate
 
 */
@@ -172,6 +174,7 @@ fn print_jeton_rouge() {
     print!("]");
 }
 
+#[warn(dead_code)]
 fn check_partie_continue(joueur_jaune: &Joueur, joueur_rouge: &Joueur) -> bool {
     if joueur_jaune.nbre_jetons.get() > 1 && joueur_rouge.nbre_jetons.get() > 1 {
         true
@@ -181,26 +184,44 @@ fn check_partie_continue(joueur_jaune: &Joueur, joueur_rouge: &Joueur) -> bool {
 }
 
 /// Place un jeton sur le tableau et le retranche au stock du joueur.
-fn put_jeton(tableau: &mut[[Case;7]; 6], col: usize, joueur: &Joueur) {
+fn put_jeton(tableau: &mut[[Case;7]; 6], col: usize, joueur: &Joueur) -> u8 {
     // let test = tableau;
-    let ligne = glisse_jeton(tableau, col).expect("erreur");
+
+    let ligne = match glisse_jeton(tableau, col) {
+        Ok(colonne) => colonne,
+        Err(erreur) => {
+            println!("{}", erreur);
+            return 0},
+    };
+
+
+    // let ligne = glisse_jeton(tableau, col).unwrap_or_else(|erreur| {
+    //     eprintln!("Erreur : {}", erreur);
+    //     process::exit(1);
+    // });
+    // match ligne {
+    //     8 => false,
+    //     _ => (),
+    // }
+
     tableau[ligne][col] = Case::Pleine(joueur.couleur);
 
     match joueur.couleur {
         Couleur::Jaune => {joueur.moins_un_jeton();},
         Couleur::Rouge => joueur.moins_un_jeton(),
     }
+    1
 }
 
 
 
 /// vérifie si on peut mettre un jeton dans la colonne. Si c'est le cas, renvoit la position du jeton ou une erreur.
-fn glisse_jeton(tableau: &[[Case;7]; 6], col: usize) -> Result<usize, i8> {
-    let mut resultat: Result<usize, i8> = Err(0);
+fn glisse_jeton(tableau: &[[Case;7]; 6], col: usize) -> Result<usize, &'static str> {
+    let mut resultat: Result<usize, &'static str> = Err("Bug fn glisse_jeton : variable résultat initialisée, mais non changée");
     let nbre_lignes = tableau[0].len() - 1;
 
     match tableau[0][col] {
-        Case::Pleine(_) => return Err(-1),
+        Case::Pleine(_) => return Err("Colonne pleine !"),
         Case::Vide => (),
     }
 
