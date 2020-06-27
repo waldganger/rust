@@ -88,12 +88,12 @@ pub fn run() {
 
 
     // iplementer function de saisie utilisateur 
-    while check_partie_continue(&participants.joueur_jaune, &participants.joueur_rouge) {
+    while participants.compte_tour.get() < 42 {
 
         if participants.compte_tour.get() % 2 == 0 {
-        put_jeton(&mut tableau, 0, &participants.joueur_jaune);
+        put_jeton(&mut tableau, saisie_colonne(), &participants.joueur_jaune);
         } else {
-            put_jeton(&mut tableau, 0, &participants.joueur_rouge);
+            put_jeton(&mut tableau, saisie_colonne(), &participants.joueur_rouge);
         }
         participants.inc_tour();
         println!("Tour N°: {:?}", participants.compte_tour);
@@ -102,8 +102,26 @@ pub fn run() {
         println!("{:?}", &participants.joueur_jaune.nbre_jetons);
     }
     println!("Fin de partie");
+}
+
+pub fn saisie_colonne() -> usize {
+    loop {
+        let mut saisie = String::new();
+        io::stdin().read_line(&mut saisie)
+        .expect("Problème mémoire.");
+        let colonne: usize = match saisie.trim().parse() {
+            Ok(chiffre) => chiffre,
+            Err(_) => continue
+        };
+
+        match colonne {
+            1..=7 => return colonne - 1,
+            _ => {println!("Erreur : la colonne doit être comprise entre 1 et 7"); continue},
+        }
+
+    }
     
-    
+
 }
 
 pub fn aff_tableau(&mut tableau: &mut[[Case;7];6]) {
