@@ -37,7 +37,7 @@ impl Joueur {
     pub fn nouveau_joueur(coul: Couleur) -> Joueur {
         Joueur {
             couleur: coul,
-            nbre_jetons: Cell::new(21),
+            nbre_jetons: Cell::new(21),       // Plus de jetons == fin de partie.
         }
     }
 
@@ -60,12 +60,12 @@ impl Participants {
             Participants {
                 joueur_jaune: Joueur::nouveau_joueur(Couleur::Jaune),
                 joueur_rouge: Joueur::nouveau_joueur(Couleur::Rouge),
-                compte_tour: Cell::new(0),
+                compte_tour: Cell::new(0),      // Sert uniquement à déterminer à qui le tour
             }
         }
     
     pub fn inc_tour(&self) {
-        self.compte_tour.set(self.compte_tour.get() + 1);
+        self.compte_tour.set(self.compte_tour.get() + 1);  
     }
 }
 
@@ -89,9 +89,10 @@ pub fn run() {
     let participants = Participants::new_participants();
 
 
-    // iplementer function de saisie utilisateur 
-    while participants.compte_tour.get() < 42 {
-
+    // Le compte-tour peut aller plus haut que 42, en cas d'erreur
+    // while participants.joueur_jaune.nbre_jetons.get() != 0
+    // && participants.joueur_rouge.nbre_jetons.get() != 0 {
+    loop {
         if participants.compte_tour.get() % 2 == 0 {
         put_jeton(&mut tableau, saisie_colonne(), &participants.joueur_jaune);
         } else {
@@ -101,10 +102,16 @@ pub fn run() {
         println!("Tour N°: {:?}", participants.compte_tour);
             
         aff_tableau(&mut tableau);
-        println!("{:?}", &participants.joueur_jaune.nbre_jetons);
+        println!("Joueur jaune a {:?} jetons", &participants.joueur_jaune.nbre_jetons);
+        println!("Joueur rouge a {:?} jetons", &participants.joueur_rouge.nbre_jetons);
+        if participants.joueur_jaune.nbre_jetons.get() == 0 && participants.joueur_rouge.nbre_jetons.get() == 0 {
+            println!("Fin de partie");
+            break;
+        }
     }
-    println!("Fin de partie");
+    
 }
+
 
 pub fn saisie_colonne() -> usize {
     loop {
