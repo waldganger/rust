@@ -1,9 +1,9 @@
 use std::io::{self, Write};
 use termcolor::{StandardStream, Color, ColorChoice, ColorSpec, WriteColor};
 use std::cell::Cell;                    //  enables mutation inside an immutable struct
-use std::process;
-use std::error::Error;
 
+
+#[derive(PartialEq)]
 pub enum Case {
     Pleine(Couleur),
     Vide,
@@ -16,6 +16,8 @@ impl Clone for Case {
     }
 }
 
+#[derive(Debug)]
+#[derive(PartialEq)]
 pub enum Couleur {
     Jaune,
     Rouge,
@@ -80,7 +82,7 @@ crée joueurs -- OK
 affiche tableau -- colonnes -- à qui le tour
 input -- OK
 put_jeton -- OK
-check: gagnant -- stalemate
+check: gagnant -- stalemate OK
 
 */
 
@@ -181,7 +183,7 @@ fn print_jeton_rouge() {
     print!("]");
 }
 
-#[warn(dead_code)]
+
 fn check_partie_continue(joueur_jaune: &Joueur, joueur_rouge: &Joueur) -> bool {
     if joueur_jaune.nbre_jetons.get() > 1 && joueur_rouge.nbre_jetons.get() > 1 {
         true
@@ -210,8 +212,46 @@ fn put_jeton(tableau: &mut[[Case;7]; 6], col: usize, joueur: &Joueur) -> u8 {
     //     8 => false,
     //     _ => (),
     // }
-
+    
     tableau[ligne][col] = Case::Pleine(joueur.couleur);
+    let couleur_du_joueur = joueur.couleur;
+    if check_horizontal(tableau, &couleur_du_joueur) {
+        println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
+        std::process::exit(0);
+    }
+
+    /*
+    ICI INSERER FONCTION QUI VERIFIE SI 4 JETONS DE MEME COULEUR SONT ALIGNES
+    - test sur le dernier jeton
+    Si nombre de jeton < 19, on commence le test
+    Pour tester :
+    si x >= 3 
+        x-1 y
+        x-2 y
+        ...
+    Pas de limite de test pour y car o
+        xy-1
+        ...
+    Test de la couleur du joueur uniquement
+    HORIZONTAL
+    Pour chaque ligne 0..6
+        si case mm couleur
+            alors + 1
+        si case pleine ou autre couleur
+            alors compteur à 0
+        si compteur = 4
+            WIN
+
+    VERTICAL
+    Pour chaque colonne (0..5).rev()        // en sens inverse, car on remonte
+        si case vide                        // case vide == que des cases vides après.
+            break
+        si case mm couleur
+            alors compteur + 1
+        si case vide ou autre couleur
+            alors compteur à 0
+
+    */
 
     match joueur.couleur {
         Couleur::Jaune => {joueur.moins_un_jeton();},
@@ -232,14 +272,41 @@ fn glisse_jeton(tableau: &[[Case;7]; 6], col: usize) -> Result<usize, &'static s
         Case::Vide => (),
     }
 
-        for i in (0..nbre_lignes).rev() {
-            match tableau[i][col] {
-            Case::Pleine(_) =>  (),
-            Case::Vide => {resultat = Ok(i); return resultat;},
-        
+    for i in (0..nbre_lignes).rev() {
+        match tableau[i][col] {
+        Case::Pleine(_) =>  (),
+        Case::Vide => {resultat = Ok(i); return resultat;},
+    
         }
     }
     // println!("dernier renvoi, i = {:?}", resultat);
     resultat
 }
 
+fn check_horizontal(tableau: &mut[[Case; 7]; 6], jeton: &Couleur) -> bool {
+
+    for ligne in tableau.iter(){
+        let mut compteur: u8 = 0;
+        for case in ligne.iter(){
+            match case {
+                Case::Pleine(Couleur::Jaune) => {
+                    match jeton {
+                        Couleur::Jaune => compteur +=1,
+                        _ => compteur = 0,
+                    }
+                }
+                Case::Pleine(Couleur::Rouge) => {
+                    match jeton {
+                        Couleur::Rouge => compteur += 1,
+                        _ => compteur = 0,
+                    }
+                }
+                _ => compteur = 0,
+            }
+            if let 4 = compteur {
+                return true;
+            }
+        }
+    }
+    false
+}
