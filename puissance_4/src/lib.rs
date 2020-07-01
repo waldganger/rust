@@ -2,6 +2,8 @@ use std::io::{self, Write};
 use termcolor::{StandardStream, Color, ColorChoice, ColorSpec, WriteColor};
 use std::cell::Cell;                    //  enables mutation inside an immutable struct
 
+const LIGNES: usize = 6;
+const COLONNES: usize = 7;
 
 #[derive(PartialEq)]
 pub enum Case {
@@ -87,7 +89,7 @@ check: gagnant -- stalemate OK
 */
 
 pub fn run() {
-    let mut tableau = [[Case::Vide; 7]; 6];
+    let mut tableau = [[Case::Vide; COLONNES]; LIGNES];
     let participants = Participants::new_participants();
 
 
@@ -126,7 +128,7 @@ pub fn saisie_colonne() -> usize {
         };
 
         match colonne {
-            1..=7 => return colonne - 1,
+            1..=COLONNES => return colonne - 1,
             _ => {println!("Erreur : la colonne doit être comprise entre 1 et 7"); continue},
         }
 
@@ -135,7 +137,7 @@ pub fn saisie_colonne() -> usize {
 
 }
 
-pub fn aff_tableau(&mut tableau: &mut[[Case;7];6]) {
+pub fn aff_tableau(&mut tableau: &mut[[Case;COLONNES];LIGNES]) {
     let lignes = tableau.iter();
 
     for ligne in lignes {
@@ -193,7 +195,7 @@ fn check_partie_continue(joueur_jaune: &Joueur, joueur_rouge: &Joueur) -> bool {
 }
 
 /// Place un jeton sur le tableau et le retranche au stock du joueur.
-fn put_jeton(tableau: &mut[[Case;7]; 6], col: usize, joueur: &Joueur) -> u8 {
+fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur) -> u8 {
     // let test = tableau;
 
     let ligne = match glisse_jeton(tableau, col) {
@@ -216,6 +218,11 @@ fn put_jeton(tableau: &mut[[Case;7]; 6], col: usize, joueur: &Joueur) -> u8 {
     tableau[ligne][col] = Case::Pleine(joueur.couleur);
     let couleur_du_joueur = joueur.couleur;
     if check_horizontal(tableau, &couleur_du_joueur) {
+        println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
+        std::process::exit(0);
+    }
+
+    if check_vertical(tableau, &couleur_du_joueur, col) {
         println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
         std::process::exit(0);
     }
@@ -263,7 +270,7 @@ fn put_jeton(tableau: &mut[[Case;7]; 6], col: usize, joueur: &Joueur) -> u8 {
 
 
 /// vérifie si on peut mettre un jeton dans la colonne. Si c'est le cas, renvoit la position du jeton ou une erreur.
-fn glisse_jeton(tableau: &[[Case;7]; 6], col: usize) -> Result<usize, &'static str> {
+fn glisse_jeton(tableau: &[[Case;COLONNES]; LIGNES], col: usize) -> Result<usize, &'static str> {
     let mut resultat: Result<usize, &'static str> = Err("Bug fn glisse_jeton : variable résultat initialisée, mais non changée");
     let nbre_lignes = tableau[0].len() - 1;
 
@@ -283,7 +290,7 @@ fn glisse_jeton(tableau: &[[Case;7]; 6], col: usize) -> Result<usize, &'static s
     resultat
 }
 
-fn check_horizontal(tableau: &mut[[Case; 7]; 6], jeton: &Couleur) -> bool {
+fn check_horizontal(tableau: &mut[[Case; COLONNES]; 6], jeton: &Couleur) -> bool {
 
     for ligne in tableau.iter(){
         let mut compteur: u8 = 0;
@@ -306,6 +313,31 @@ fn check_horizontal(tableau: &mut[[Case; 7]; 6], jeton: &Couleur) -> bool {
             if let 4 = compteur {
                 return true;
             }
+        }
+    }
+    false
+}
+
+fn check_vertical(tableau: &mut [[Case; COLONNES];LIGNES], jeton: &Couleur, colonne: usize) -> bool { 
+    let mut compteur: u8 = 0;
+    for ligne in (0..LIGNES).rev() {
+        match tableau[ligne][colonne] {
+            Case::Pleine(Couleur::Jaune) => {
+                match jeton {
+                    Couleur::Jaune => compteur += 1,
+                    Couleur::Rouge => compteur = 0,
+                }
+            }
+            Case::Pleine(Couleur::Rouge) => {
+                match jeton {
+                    Couleur::Rouge => compteur += 1,
+                    Couleur::Jaune => compteur = 0,
+                }
+            }
+            Case::Vide => compteur = 0,
+        }
+        if let 4 = compteur {
+            return true;
         }
     }
     false
