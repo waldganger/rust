@@ -227,6 +227,11 @@ fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur
         std::process::exit(0);
     }
 
+    if check_diagonal_top_left_bottom_right(tableau, &couleur_du_joueur) {
+        println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
+        std::process::exit(0);
+    }
+
     /*
     ICI INSERER FONCTION QUI VERIFIE SI 4 JETONS DE MEME COULEUR SONT ALIGNES
     - test sur le dernier jeton
@@ -391,10 +396,32 @@ fn check_vertical(tableau: &mut [[Case; COLONNES];LIGNES], jeton: &Couleur, colo
 fn check_diagonal_top_left_bottom_right
 (tableau: &mut [[Case; COLONNES]; LIGNES], jeton: &Couleur) -> bool {
     for i in (0..LIGNES).rev() {
+        let mut compteur: u8 = 0;
         for (j, k) in (i..LIGNES).zip(0..LIGNES - i + 1){
-            println!("{}/t{}", j, k);
+        // println!("{}\t{}", j, k);
+
+        match tableau[j][k] {
+                Case::Pleine(Couleur::Jaune) => {
+                    match jeton {
+                        Couleur::Jaune => compteur +=1,
+                        _ => compteur = 0,
+                    }
+                }
+                Case::Pleine(Couleur::Rouge) => {
+                    match jeton {
+                        Couleur::Rouge => compteur += 1,
+                        _ => compteur = 0,
+                    }
+                }
+                _ => compteur = 0,
+            }
+            if let 4 = compteur {
+                return true;
+            }
+
         }
+        // println!();
     }
-    true
+    false
 }
 
