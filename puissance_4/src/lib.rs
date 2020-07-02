@@ -258,6 +258,50 @@ fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur
         si case vide ou autre couleur
             alors compteur à 0
 
+    DIAGONALE HAUT-GAUCHE >> BAS-DROIT
+    lignes--
+    colonnes++
+    range départ : [2][0] -- [2][6]
+                    |           |
+                    V           V
+    range arrivée: [0][3] -- [6][3]
+
+    [5][0]
+
+    [4][0]
+    [5][1]
+
+    [3][0]
+    [4][1]
+    [5][2]
+
+    [2][0]
+    [3][1]
+    [4][2]
+    [5][3]
+
+    [1][0]
+    [2][1]
+    [3][2]
+    [4][3]
+    [5][4]
+
+    [0][0]
+    [1][1]
+    [2][2]
+    [3][3]
+    [4][4]
+    [5][5]
+
+
+    DIAGONALE HAUT-DROIT << BAS-GAUCHE
+    lignes++
+    colonnes--
+    range départ : [0][3] -- [2][6]
+                    |           |
+                    V           V
+    range arrivée: [3][0] -- [6][3]
+
     */
 
     match joueur.couleur {
@@ -290,7 +334,7 @@ fn glisse_jeton(tableau: &[[Case;COLONNES]; LIGNES], col: usize) -> Result<usize
     resultat
 }
 
-fn check_horizontal(tableau: &mut[[Case; COLONNES]; 6], jeton: &Couleur) -> bool {
+fn check_horizontal(tableau: &mut[[Case; COLONNES]; LIGNES], jeton: &Couleur) -> bool {
 
     for ligne in tableau.iter(){
         let mut compteur: u8 = 0;
@@ -342,3 +386,15 @@ fn check_vertical(tableau: &mut [[Case; COLONNES];LIGNES], jeton: &Couleur, colo
     }
     false
 }
+
+
+fn check_diagonal_top_left_bottom_right
+(tableau: &mut [[Case; COLONNES]; LIGNES], jeton: &Couleur) -> bool {
+    for i in (0..LIGNES).rev() {
+        for (j, k) in (i..LIGNES).zip(0..LIGNES - i + 1){
+            println!("{}/t{}", j, k);
+        }
+    }
+    true
+}
+
