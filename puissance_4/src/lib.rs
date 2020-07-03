@@ -92,26 +92,30 @@ pub fn run() {
     let mut tableau = [[Case::Vide; COLONNES]; LIGNES];
     let participants = Participants::new_participants();
 
-
-    // Le compte-tour peut aller plus haut que 42, en cas d'erreur
-    // while participants.joueur_jaune.nbre_jetons.get() != 0
-    // && participants.joueur_rouge.nbre_jetons.get() != 0 {
     loop {
-        if participants.compte_tour.get() % 2 == 0 {
+        // let print_couleur_joueur = match participants.compte_tour.
+        cls();
+        println!("Tour {} : joueur {}", &participants.compte_tour.get() + 1, jaune_ou_rouge(&participants));
+        
+        aff_tableau(&mut tableau);
+        if &participants.compte_tour.get() % 2 == 0 {
         put_jeton(&mut tableau, saisie_colonne(), &participants.joueur_jaune);
         } else {
             put_jeton(&mut tableau, saisie_colonne(), &participants.joueur_rouge);
         }
         participants.inc_tour();
-        println!("Tour N°: {:?}", participants.compte_tour);
-            
-        aff_tableau(&mut tableau);
-        println!("Joueur jaune a {:?} jetons", &participants.joueur_jaune.nbre_jetons);
-        println!("Joueur rouge a {:?} jetons", &participants.joueur_rouge.nbre_jetons);
+
+        cls();
+
         if participants.joueur_jaune.nbre_jetons.get() == 0 && participants.joueur_rouge.nbre_jetons.get() == 0 {
             println!("Fin de partie");
+
             break;
         }
+        
+
+        // println!("{}[2J", 27 as char);
+        
     }
     
 }
@@ -186,13 +190,13 @@ fn print_jeton_rouge() {
 }
 
 
-fn check_partie_continue(joueur_jaune: &Joueur, joueur_rouge: &Joueur) -> bool {
-    if joueur_jaune.nbre_jetons.get() > 1 && joueur_rouge.nbre_jetons.get() > 1 {
-        true
-    } else {
-        false
-    }
-}
+// fn check_partie_continue(joueur_jaune: &Joueur, joueur_rouge: &Joueur) -> bool {
+//     if joueur_jaune.nbre_jetons.get() > 1 && joueur_rouge.nbre_jetons.get() > 1 {
+//         true
+//     } else {
+//         false
+//     }
+// }
 
 /// Place un jeton sur le tableau et le retranche au stock du joueur.
 fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur) -> u8 {
@@ -206,44 +210,44 @@ fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur
     };
 
 
-    // let ligne = glisse_jeton(tableau, col).unwrap_or_else(|erreur| {
-    //     eprintln!("Erreur : {}", erreur);
-    //     process::exit(1);
-    // });
-    // match ligne {
-    //     8 => false,
-    //     _ => (),
-    // }
     
     tableau[ligne][col] = Case::Pleine(joueur.couleur);
     let couleur_du_joueur = joueur.couleur;
     if check_horizontal(tableau, &couleur_du_joueur) {
-        println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
+        aff_tableau(tableau);
+        println!("Victoire du joueur {:?}", joueur.couleur);
+        // println!("Tour {} : joueur {}", &participants.compte_tour.get() + 1, jaune_ou_rouge(&participants));
+        
         std::process::exit(0);
     }
 
     if check_vertical(tableau, &couleur_du_joueur, col) {
-        println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
+        aff_tableau(tableau);
+        println!("Victoire du joueur {:?}", joueur.couleur);
         std::process::exit(0);
     }
 
     if check_diagonal_top_left_bottom_right(tableau, &couleur_du_joueur) {
-        println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
+        aff_tableau(tableau);
+        println!("Victoire du joueur {:?}", joueur.couleur);
         std::process::exit(0);
     }
 
     if check_diagonal_top_left_bottom_right_2(tableau, &couleur_du_joueur) {
-        println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
+        aff_tableau(tableau);
+        println!("Victoire du joueur {:?}", joueur.couleur);
         std::process::exit(0);
     }
 
     if check_diagonal_top_right_bottom_left(tableau, &couleur_du_joueur) {
-        println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
+        aff_tableau(tableau);
+        println!("Victoire du joueur {:?}", joueur.couleur);
         std::process::exit(0);
     }
 
     if check_diagonal_top_right_bottom_left_2(tableau, &couleur_du_joueur) {
-        println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
+        aff_tableau(tableau);
+        println!("Victoire du joueur {:?}", joueur.couleur);
         std::process::exit(0);
     }
 
@@ -594,3 +598,16 @@ fn check_diagonal_top_right_bottom_left_2
     false
 }
 
+fn cls() {
+    for _i in 0..41 {
+        println!();
+    }
+}
+
+fn jaune_ou_rouge(participants: &Participants) -> String {
+    if participants.compte_tour.get() % 2 == 0 {
+        return String::from("jaune")
+    } else {
+        String::from("rouge")
+    }
+}
