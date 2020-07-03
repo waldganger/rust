@@ -232,7 +232,17 @@ fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur
         std::process::exit(0);
     }
 
-    if check_diagonal_bottom_left_top_right(tableau, &couleur_du_joueur) {
+    if check_diagonal_top_left_bottom_right_2(tableau, &couleur_du_joueur) {
+        println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
+        std::process::exit(0);
+    }
+
+    if check_diagonal_top_right_bottom_left(tableau, &couleur_du_joueur) {
+        println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
+        std::process::exit(0);
+    }
+
+    if check_diagonal_top_right_bottom_left_2(tableau, &couleur_du_joueur) {
         println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
         std::process::exit(0);
     }
@@ -323,6 +333,46 @@ fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur
     [3][5]
     [4][6]
     
+    etc
+
+    check_diagonal_top_right_bottom_left
+    lignes++
+    colonnes--
+
+    [5][6]
+
+    [4][6]
+    [5][5]
+
+    [3][6]
+    [4][5]
+    [5][4]
+
+    [2][6]
+    [3][5]
+    [4][4]
+    [5][3]
+
+    etc
+
+    check_diagonal_top_right_bottom_left_2
+    lignes++
+    colonnes--
+
+    [5][0]
+    [4][1]
+    [3][2]
+    [2][3]
+    [1][4]
+    [0][5]
+
+    [4][0]
+    [3][1]
+    [2][2]
+    [1][3]
+    [0][4]
+
+
     etc
 
     DIAGONALE HAUT-DROIT << BAS-GAUCHE
@@ -451,12 +501,74 @@ fn check_diagonal_top_left_bottom_right
     false
 }
 
-fn check_diagonal_bottom_left_top_right
+fn check_diagonal_top_left_bottom_right_2
 (tableau: &mut [[Case; COLONNES]; LIGNES], jeton: &Couleur) -> bool {
     for i in 1..COLONNES {
         let mut compteur: u8 = 0;
         for (j, k) in (0..COLONNES - i + 1).zip(i..COLONNES){
         
+
+        match tableau[j][k] {
+                Case::Pleine(Couleur::Jaune) => {
+                    match jeton {
+                        Couleur::Jaune => compteur +=1,
+                        _ => compteur = 0,
+                    }
+                }
+                Case::Pleine(Couleur::Rouge) => {
+                    match jeton {
+                        Couleur::Rouge => compteur += 1,
+                        _ => compteur = 0,
+                    }
+                }
+                _ => compteur = 0,
+            }
+            if let 4 = compteur {
+                return true;
+            }
+
+        }
+    }
+    false
+}
+
+fn check_diagonal_top_right_bottom_left
+(tableau: &mut [[Case; COLONNES]; LIGNES], jeton: &Couleur) -> bool {
+    for i in (0..LIGNES).rev() {
+        let mut compteur: u8 = 0;
+        for (j, k) in (i..LIGNES).zip((0..COLONNES).rev()){
+        // println!("ligne = {}\tcolonne = {}", j, k);
+
+        match tableau[j][k] {
+                Case::Pleine(Couleur::Jaune) => {
+                    match jeton {
+                        Couleur::Jaune => compteur +=1,
+                        _ => compteur = 0,
+                    }
+                }
+                Case::Pleine(Couleur::Rouge) => {
+                    match jeton {
+                        Couleur::Rouge => compteur += 1,
+                        _ => compteur = 0,
+                    }
+                }
+                _ => compteur = 0,
+            }
+            if let 4 = compteur {
+                return true;
+            }
+
+        }
+    }
+    false
+}
+
+fn check_diagonal_top_right_bottom_left_2
+(tableau: &mut [[Case; COLONNES]; LIGNES], jeton: &Couleur) -> bool {
+    for i in (0..LIGNES).rev() {
+        let mut compteur: u8 = 0;
+        for (j, k) in (0..i + 1).rev().zip(0..COLONNES){
+        // println!("ligne = {}\tcolonne = {}", j, k);
 
         match tableau[j][k] {
                 Case::Pleine(Couleur::Jaune) => {
