@@ -232,6 +232,11 @@ fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur
         std::process::exit(0);
     }
 
+    if check_diagonal_bottom_left_top_right(tableau, &couleur_du_joueur) {
+        println!("VICTOIRE DU JOUEUR {:?}", joueur.couleur);
+        std::process::exit(0);
+    }
+
     /*
     ICI INSERER FONCTION QUI VERIFIE SI 4 JETONS DE MEME COULEUR SONT ALIGNES
     - test sur le dernier jeton
@@ -271,6 +276,9 @@ fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur
                     V           V
     range arrivée: [0][3] -- [6][3]
 
+
+    check_diagonal_top_left_bottom_right
+
     [5][0]
 
     [4][0]
@@ -298,6 +306,24 @@ fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur
     [4][4]
     [5][5]
 
+
+    check_diagonal_bottom_left_top_right
+    lignes++
+    col++ (départ à un)
+    [0][1]
+    [1][2]
+    [2][3]
+    [3][4]
+    [4][5]
+    [5][6]
+
+    [0][2]
+    [1][3]
+    [2][4]
+    [3][5]
+    [4][6]
+    
+    etc
 
     DIAGONALE HAUT-DROIT << BAS-GAUCHE
     lignes++
@@ -398,7 +424,7 @@ fn check_diagonal_top_left_bottom_right
     for i in (0..LIGNES).rev() {
         let mut compteur: u8 = 0;
         for (j, k) in (i..LIGNES).zip(0..LIGNES - i + 1){
-        // println!("{}\t{}", j, k);
+        
 
         match tableau[j][k] {
                 Case::Pleine(Couleur::Jaune) => {
@@ -421,6 +447,37 @@ fn check_diagonal_top_left_bottom_right
 
         }
         // println!();
+    }
+    false
+}
+
+fn check_diagonal_bottom_left_top_right
+(tableau: &mut [[Case; COLONNES]; LIGNES], jeton: &Couleur) -> bool {
+    for i in 1..COLONNES {
+        let mut compteur: u8 = 0;
+        for (j, k) in (0..COLONNES - i + 1).zip(i..COLONNES){
+        
+
+        match tableau[j][k] {
+                Case::Pleine(Couleur::Jaune) => {
+                    match jeton {
+                        Couleur::Jaune => compteur +=1,
+                        _ => compteur = 0,
+                    }
+                }
+                Case::Pleine(Couleur::Rouge) => {
+                    match jeton {
+                        Couleur::Rouge => compteur += 1,
+                        _ => compteur = 0,
+                    }
+                }
+                _ => compteur = 0,
+            }
+            if let 4 = compteur {
+                return true;
+            }
+
+        }
     }
     false
 }
