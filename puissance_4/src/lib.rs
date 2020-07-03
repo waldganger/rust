@@ -1,6 +1,8 @@
 use std::io::{self, Write};
 use termcolor::{StandardStream, Color, ColorChoice, ColorSpec, WriteColor};
 use std::cell::Cell;                    //  enables mutation inside an immutable struct
+use std::thread;
+use std::time::Duration;
 
 const LIGNES: usize = 6;
 const COLONNES: usize = 7;
@@ -217,7 +219,7 @@ fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur
         aff_tableau(tableau);
         println!("Victoire du joueur {:?}", joueur.couleur);
         // println!("Tour {} : joueur {}", &participants.compte_tour.get() + 1, jaune_ou_rouge(&participants));
-        
+        thread::sleep(Duration::from_secs(2));
         std::process::exit(0);
     }
 
