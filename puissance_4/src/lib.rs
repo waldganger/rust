@@ -218,7 +218,6 @@ fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur
     if check_horizontal(tableau, &couleur_du_joueur) {
         aff_tableau(tableau);
         println!("Victoire du joueur {:?}", joueur.couleur);
-        // println!("Tour {} : joueur {}", &participants.compte_tour.get() + 1, jaune_ou_rouge(&participants));
         thread::sleep(Duration::from_secs(2));
         std::process::exit(0);
     }
@@ -423,31 +422,41 @@ fn glisse_jeton(tableau: &[[Case;COLONNES]; LIGNES], col: usize) -> Result<usize
 
 fn check_horizontal(tableau: &mut[[Case; COLONNES]; LIGNES], jeton: &Couleur) -> bool {
 
-    for ligne in tableau.iter(){
-        let mut compteur: u8 = 0;
-        for case in ligne.iter(){
-            match case {
-                Case::Pleine(Couleur::Jaune) => {
-                    match jeton {
-                        Couleur::Jaune => compteur +=1,
-                        _ => compteur = 0,
-                    }
-                }
-                Case::Pleine(Couleur::Rouge) => {
-                    match jeton {
-                        Couleur::Rouge => compteur += 1,
-                        _ => compteur = 0,
-                    }
-                }
-                _ => compteur = 0,
-            }
-            if let 4 = compteur {
+    // for ligne in tableau.iter(){
+    //     let mut compteur: u8 = 0;
+    //     for case in ligne.iter(){
+        for i in 0..LIGNES {
+            let mut compteur: u8 = 0;
+            for j in 0..COLONNES {
+            //     match tableau[i][j] {
+            //         Case::Pleine(Couleur::Jaune) => {
+            //             match jeton {
+            //                 Couleur::Jaune => compteur +=1,
+            //                 _ => compteur = 0,
+            //             }
+            //         }
+            //     Case::Pleine(Couleur::Rouge) => {
+            //         match jeton {
+            //             Couleur::Rouge => compteur += 1,
+            //             _ => compteur = 0,
+            //         }
+            //     }
+            //     _ => compteur = 0,
+            // }
+            match_case(tableau, jeton, i, j, &mut compteur);
+                // compteur += match_case(tableau, jeton, i, j, compteur);
+            //println!("compteur = {}", match_case(tableau, jeton, i, j, &compteur));
+            if compteur == 4 {
                 return true;
             }
+            
         }
+
     }
-    false
-}
+        false
+    }
+
+
 
 fn check_vertical(tableau: &mut [[Case; COLONNES];LIGNES], jeton: &Couleur, colonne: usize) -> bool { 
     let mut compteur: u8 = 0;
@@ -502,7 +511,6 @@ fn check_diagonal_top_left_bottom_right
             }
 
         }
-        // println!();
     }
     false
 }
@@ -543,7 +551,6 @@ fn check_diagonal_top_right_bottom_left
     for i in (0..LIGNES).rev() {
         let mut compteur: u8 = 0;
         for (j, k) in (i..LIGNES).zip((0..COLONNES).rev()){
-        // println!("ligne = {}\tcolonne = {}", j, k);
 
         match tableau[j][k] {
                 Case::Pleine(Couleur::Jaune) => {
@@ -611,5 +618,27 @@ fn jaune_ou_rouge(participants: &Participants) -> String {
         return String::from("jaune")
     } else {
         String::from("rouge")
+    }
+}
+
+fn match_case(tableau: &mut [[Case; COLONNES];LIGNES], jeton: &Couleur, 
+    ligne: usize, col:usize, compteur: &mut u8) {
+    match tableau[ligne][col] {
+        
+
+        Case::Pleine(Couleur::Jaune) => {
+                match jeton {
+                    Couleur::Jaune => *compteur +=1,
+                    _ => *compteur = 0,
+                }
+            }
+        Case::Pleine(Couleur::Rouge) => {
+            match jeton {
+                Couleur::Rouge => *compteur += 1,
+                _ => *compteur = 0,
+            }
+        }
+        _ => *compteur = 0,
+
     }
 }
