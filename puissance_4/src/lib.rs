@@ -208,17 +208,17 @@ fn glisse_jeton(tableau: &[[Case;COLONNES]; LIGNES], col: usize) -> Result<usize
 }
 
 fn check_horizontal(tableau: &mut[[Case; COLONNES]; LIGNES], jeton: &Couleur) -> bool {
-        for i in 0..LIGNES {
-            let mut compteur: u8 = 0;
-            for j in 0..COLONNES {
-                match_case(tableau, jeton, i, j, &mut compteur);
-                if compteur == 4 {
-                    return true;
-                }   
+    for i in 0..LIGNES {
+        let mut compteur: u8 = 0;
+        for j in 0..COLONNES {
+            match_case(tableau, jeton, i, j, &mut compteur);
+            if compteur == 4 {
+                return true;
+            }   
         }
     }
-        false
-    }
+    false
+}
 
 fn check_vertical(tableau: &mut [[Case; COLONNES];LIGNES], jeton: &Couleur, colonne: usize) -> bool { 
     let mut compteur: u8 = 0;
