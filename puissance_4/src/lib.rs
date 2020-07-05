@@ -75,9 +75,7 @@ pub fn run() {
 
     loop {
         cls();
-        // ATTENTION BUG : si le sommet de la colonne est atteint, le compte tour s'incrémente au lieu de se bloquer.
         println!("Tour {} : joueur {}", &participants.compte_tour.get() + 1, jaune_ou_rouge(&participants));
-        
         aff_tableau(&mut tableau);
         // bloc de gestion du tour. A partir du compte tour, on détermine quel joueur doit agir.
         // en cas de colonne pleine, on reste au même tour.
