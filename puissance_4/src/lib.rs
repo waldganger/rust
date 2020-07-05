@@ -444,8 +444,7 @@ fn check_horizontal(tableau: &mut[[Case; COLONNES]; LIGNES], jeton: &Couleur) ->
             //     _ => compteur = 0,
             // }
             match_case(tableau, jeton, i, j, &mut compteur);
-                // compteur += match_case(tableau, jeton, i, j, compteur);
-            //println!("compteur = {}", match_case(tableau, jeton, i, j, &compteur));
+            
             if compteur == 4 {
                 return true;
             }
@@ -461,24 +460,30 @@ fn check_horizontal(tableau: &mut[[Case; COLONNES]; LIGNES], jeton: &Couleur) ->
 fn check_vertical(tableau: &mut [[Case; COLONNES];LIGNES], jeton: &Couleur, colonne: usize) -> bool { 
     let mut compteur: u8 = 0;
     for ligne in (0..LIGNES).rev() {
-        match tableau[ligne][colonne] {
-            Case::Pleine(Couleur::Jaune) => {
-                match jeton {
-                    Couleur::Jaune => compteur += 1,
-                    Couleur::Rouge => compteur = 0,
-                }
+        // match tableau[ligne][colonne] {
+        //     Case::Pleine(Couleur::Jaune) => {
+        //         match jeton {
+        //             Couleur::Jaune => compteur += 1,
+        //             Couleur::Rouge => compteur = 0,
+        //         }
+        //     }
+        //     Case::Pleine(Couleur::Rouge) => {
+        //         match jeton {
+        //             Couleur::Rouge => compteur += 1,
+        //             Couleur::Jaune => compteur = 0,
+        //         }
+        //     }
+        //     Case::Vide => compteur = 0,
+        // }
+        // if let 4 = compteur {
+        //     return true;
+        // }
+
+            match_case(tableau, jeton, ligne, colonne, &mut compteur);
+            
+            if compteur == 4 {
+                return true;
             }
-            Case::Pleine(Couleur::Rouge) => {
-                match jeton {
-                    Couleur::Rouge => compteur += 1,
-                    Couleur::Jaune => compteur = 0,
-                }
-            }
-            Case::Vide => compteur = 0,
-        }
-        if let 4 = compteur {
-            return true;
-        }
     }
     false
 }
@@ -491,22 +496,28 @@ fn check_diagonal_top_left_bottom_right
         for (j, k) in (i..LIGNES).zip(0..LIGNES - i + 1){
         
 
-        match tableau[j][k] {
-                Case::Pleine(Couleur::Jaune) => {
-                    match jeton {
-                        Couleur::Jaune => compteur +=1,
-                        _ => compteur = 0,
-                    }
-                }
-                Case::Pleine(Couleur::Rouge) => {
-                    match jeton {
-                        Couleur::Rouge => compteur += 1,
-                        _ => compteur = 0,
-                    }
-                }
-                _ => compteur = 0,
-            }
-            if let 4 = compteur {
+        // match tableau[j][k] {
+        //         Case::Pleine(Couleur::Jaune) => {
+        //             match jeton {
+        //                 Couleur::Jaune => compteur +=1,
+        //                 _ => compteur = 0,
+        //             }
+        //         }
+        //         Case::Pleine(Couleur::Rouge) => {
+        //             match jeton {
+        //                 Couleur::Rouge => compteur += 1,
+        //                 _ => compteur = 0,
+        //             }
+        //         }
+        //         _ => compteur = 0,
+        //     }
+        //     if let 4 = compteur {
+        //         return true;
+        //     }
+
+            match_case(tableau, jeton, j, k, &mut compteur);
+            
+            if compteur == 4 {
                 return true;
             }
 
@@ -522,22 +533,28 @@ fn check_diagonal_top_left_bottom_right_2
         for (j, k) in (0..COLONNES - i + 1).zip(i..COLONNES){
         
 
-        match tableau[j][k] {
-                Case::Pleine(Couleur::Jaune) => {
-                    match jeton {
-                        Couleur::Jaune => compteur +=1,
-                        _ => compteur = 0,
-                    }
-                }
-                Case::Pleine(Couleur::Rouge) => {
-                    match jeton {
-                        Couleur::Rouge => compteur += 1,
-                        _ => compteur = 0,
-                    }
-                }
-                _ => compteur = 0,
-            }
-            if let 4 = compteur {
+        // match tableau[j][k] {
+        //         Case::Pleine(Couleur::Jaune) => {
+        //             match jeton {
+        //                 Couleur::Jaune => compteur +=1,
+        //                 _ => compteur = 0,
+        //             }
+        //         }
+        //         Case::Pleine(Couleur::Rouge) => {
+        //             match jeton {
+        //                 Couleur::Rouge => compteur += 1,
+        //                 _ => compteur = 0,
+        //             }
+        //         }
+        //         _ => compteur = 0,
+        //     }
+        //     if let 4 = compteur {
+        //         return true;
+        //     }
+
+            match_case(tableau, jeton, j, k, &mut compteur);
+            
+            if compteur == 4 {
                 return true;
             }
 
@@ -552,22 +569,28 @@ fn check_diagonal_top_right_bottom_left
         let mut compteur: u8 = 0;
         for (j, k) in (i..LIGNES).zip((0..COLONNES).rev()){
 
-        match tableau[j][k] {
-                Case::Pleine(Couleur::Jaune) => {
-                    match jeton {
-                        Couleur::Jaune => compteur +=1,
-                        _ => compteur = 0,
-                    }
-                }
-                Case::Pleine(Couleur::Rouge) => {
-                    match jeton {
-                        Couleur::Rouge => compteur += 1,
-                        _ => compteur = 0,
-                    }
-                }
-                _ => compteur = 0,
-            }
-            if let 4 = compteur {
+        // match tableau[j][k] {
+        //         Case::Pleine(Couleur::Jaune) => {
+        //             match jeton {
+        //                 Couleur::Jaune => compteur +=1,
+        //                 _ => compteur = 0,
+        //             }
+        //         }
+        //         Case::Pleine(Couleur::Rouge) => {
+        //             match jeton {
+        //                 Couleur::Rouge => compteur += 1,
+        //                 _ => compteur = 0,
+        //             }
+        //         }
+        //         _ => compteur = 0,
+        //     }
+        //     if let 4 = compteur {
+        //         return true;
+        //     }
+
+            match_case(tableau, jeton, j, k, &mut compteur);
+            
+            if compteur == 4 {
                 return true;
             }
 
@@ -581,24 +604,29 @@ fn check_diagonal_top_right_bottom_left_2
     for i in (0..LIGNES).rev() {
         let mut compteur: u8 = 0;
         for (j, k) in (0..i + 1).rev().zip(0..COLONNES){
-        // println!("ligne = {}\tcolonne = {}", j, k);
+        
 
-        match tableau[j][k] {
-                Case::Pleine(Couleur::Jaune) => {
-                    match jeton {
-                        Couleur::Jaune => compteur +=1,
-                        _ => compteur = 0,
-                    }
-                }
-                Case::Pleine(Couleur::Rouge) => {
-                    match jeton {
-                        Couleur::Rouge => compteur += 1,
-                        _ => compteur = 0,
-                    }
-                }
-                _ => compteur = 0,
-            }
-            if let 4 = compteur {
+        // match tableau[j][k] {
+        //         Case::Pleine(Couleur::Jaune) => {
+        //             match jeton {
+        //                 Couleur::Jaune => compteur +=1,
+        //                 _ => compteur = 0,
+        //             }
+        //         }
+        //         Case::Pleine(Couleur::Rouge) => {
+        //             match jeton {
+        //                 Couleur::Rouge => compteur += 1,
+        //                 _ => compteur = 0,
+        //             }
+        //         }
+        //         _ => compteur = 0,
+        //     }
+        //     if let 4 = compteur {
+        //         return true;
+        //     }
+            match_case(tableau, jeton, j, k, &mut compteur);
+            
+            if compteur == 4 {
                 return true;
             }
 
@@ -621,6 +649,8 @@ fn jaune_ou_rouge(participants: &Participants) -> String {
     }
 }
 
+/// match_case : vérifie que le jeton dans la case du tableau reçu en argument est de la couleur du joueur
+/// si oui, incrémente et renvoit le compteur à la fonction de vérification d'alignement.
 fn match_case(tableau: &mut [[Case; COLONNES];LIGNES], jeton: &Couleur, 
     ligne: usize, col:usize, compteur: &mut u8) {
     match tableau[ligne][col] {
