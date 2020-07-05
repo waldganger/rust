@@ -7,7 +7,6 @@ use std::time::Duration;
 const LIGNES: usize = 6;
 const COLONNES: usize = 7;
 
-#[derive(PartialEq)]
 pub enum Case {
     Pleine(Couleur),
     Vide,
@@ -20,8 +19,6 @@ impl Clone for Case {
     }
 }
 
-#[derive(Debug)]
-#[derive(PartialEq)]
 pub enum Couleur {
     Jaune,
     Rouge,
@@ -33,11 +30,11 @@ impl Clone for Couleur {
         *self
     }
 }
+
 pub struct Joueur {
     couleur : Couleur,
     nbre_jetons : Cell<u8>,
 }
-
 
 impl Joueur {
     pub fn nouveau_joueur(coul: Couleur) -> Joueur {
@@ -50,16 +47,13 @@ impl Joueur {
     pub fn moins_un_jeton(&self) {
         self.nbre_jetons.set(self.nbre_jetons.get() - 1);
     }
-
 }
-
 
 struct Participants {
     joueur_jaune: Joueur,
     joueur_rouge: Joueur,
     compte_tour: Cell<u8>,
 }
-
 
 impl Participants {
     pub fn new_participants() -> Participants {
@@ -75,53 +69,38 @@ impl Participants {
     }
 }
 
-
-
-
-
-
-
-/* 
-crée joueurs -- OK
-affiche tableau -- colonnes -- à qui le tour
-input -- OK
-put_jeton -- OK
-check: gagnant -- stalemate OK
-
-*/
-
 pub fn run() {
     let mut tableau = [[Case::Vide; COLONNES]; LIGNES];
     let participants = Participants::new_participants();
 
     loop {
-        // let print_couleur_joueur = match participants.compte_tour.
         cls();
+        // ATTENTION BUG : si le sommet de la colonne est atteint, le compte tour s'incrémente au lieu de se bloquer.
         println!("Tour {} : joueur {}", &participants.compte_tour.get() + 1, jaune_ou_rouge(&participants));
         
         aff_tableau(&mut tableau);
+        // bloc de gestion du tour. A partir du compte tour, on détermine quel joueur doit agir.
+        // en cas de colonne pleine, on reste au même tour.
         if &participants.compte_tour.get() % 2 == 0 {
-        put_jeton(&mut tableau, saisie_colonne(), &participants.joueur_jaune);
+            match put_jeton(&mut tableau, saisie_colonne(), &participants.joueur_jaune) {
+                1 => (),
+                _ => participants.inc_tour(),
+            }
         } else {
-            put_jeton(&mut tableau, saisie_colonne(), &participants.joueur_rouge);
+            match put_jeton(&mut tableau, saisie_colonne(), &participants.joueur_rouge) {
+                1 => (),
+                _ => participants.inc_tour(),
+            }
         }
-        participants.inc_tour();
 
         cls();
 
         if participants.joueur_jaune.nbre_jetons.get() == 0 && participants.joueur_rouge.nbre_jetons.get() == 0 {
             println!("Fin de partie");
-
             break;
         }
-        
-
-        // println!("{}[2J", 27 as char);
-        
     }
-    
 }
-
 
 pub fn saisie_colonne() -> usize {
     loop {
@@ -139,8 +118,6 @@ pub fn saisie_colonne() -> usize {
         }
 
     }
-    
-
 }
 
 pub fn aff_tableau(&mut tableau: &mut[[Case;COLONNES];LIGNES]) {
@@ -159,8 +136,6 @@ pub fn aff_tableau(&mut tableau: &mut[[Case;COLONNES];LIGNES]) {
     }
     println!("[1][2][3][4][5][6][7]");
 }
-
-
 
 fn write_yellow() -> io::Result<()> {
     let mut stdout = StandardStream::stdout(ColorChoice::Always);
@@ -191,15 +166,6 @@ fn print_jeton_rouge() {
     print!("]");
 }
 
-
-// fn check_partie_continue(joueur_jaune: &Joueur, joueur_rouge: &Joueur) -> bool {
-//     if joueur_jaune.nbre_jetons.get() > 1 && joueur_rouge.nbre_jetons.get() > 1 {
-//         true
-//     } else {
-//         false
-//     }
-// }
-
 /// Place un jeton sur le tableau et le retranche au stock du joueur.
 fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur) -> u8 {
     // let test = tableau;
@@ -208,196 +174,21 @@ fn put_jeton(tableau: &mut[[Case;COLONNES]; LIGNES], col: usize, joueur: &Joueur
         Ok(colonne) => colonne,
         Err(erreur) => {
             println!("{}", erreur);
-            return 0},
+            thread::sleep(Duration::from_secs(2));
+            return 1},
     };
-
-
     
     tableau[ligne][col] = Case::Pleine(joueur.couleur);
     let couleur_du_joueur = joueur.couleur;
-    if check_horizontal(tableau, &couleur_du_joueur) {
-        aff_tableau(tableau);
-        println!("Victoire du joueur {:?}", joueur.couleur);
-        thread::sleep(Duration::from_secs(2));
-        std::process::exit(0);
-    }
 
-    if check_vertical(tableau, &couleur_du_joueur, col) {
-        aff_tableau(tableau);
-        println!("Victoire du joueur {:?}", joueur.couleur);
-        std::process::exit(0);
-    }
-
-    if check_diagonal_top_left_bottom_right(tableau, &couleur_du_joueur) {
-        aff_tableau(tableau);
-        println!("Victoire du joueur {:?}", joueur.couleur);
-        std::process::exit(0);
-    }
-
-    if check_diagonal_top_left_bottom_right_2(tableau, &couleur_du_joueur) {
-        aff_tableau(tableau);
-        println!("Victoire du joueur {:?}", joueur.couleur);
-        std::process::exit(0);
-    }
-
-    if check_diagonal_top_right_bottom_left(tableau, &couleur_du_joueur) {
-        aff_tableau(tableau);
-        println!("Victoire du joueur {:?}", joueur.couleur);
-        std::process::exit(0);
-    }
-
-    if check_diagonal_top_right_bottom_left_2(tableau, &couleur_du_joueur) {
-        aff_tableau(tableau);
-        println!("Victoire du joueur {:?}", joueur.couleur);
-        std::process::exit(0);
-    }
-
-    /*
-    ICI INSERER FONCTION QUI VERIFIE SI 4 JETONS DE MEME COULEUR SONT ALIGNES
-    - test sur le dernier jeton
-    Si nombre de jeton < 19, on commence le test
-    Pour tester :
-    si x >= 3 
-        x-1 y
-        x-2 y
-        ...
-    Pas de limite de test pour y car o
-        xy-1
-        ...
-    Test de la couleur du joueur uniquement
-    HORIZONTAL
-    Pour chaque ligne 0..6
-        si case mm couleur
-            alors + 1
-        si case pleine ou autre couleur
-            alors compteur à 0
-        si compteur = 4
-            WIN
-
-    VERTICAL
-    Pour chaque colonne (0..5).rev()        // en sens inverse, car on remonte
-        si case vide                        // case vide == que des cases vides après.
-            break
-        si case mm couleur
-            alors compteur + 1
-        si case vide ou autre couleur
-            alors compteur à 0
-
-    DIAGONALE HAUT-GAUCHE >> BAS-DROIT
-    lignes--
-    colonnes++
-    range départ : [2][0] -- [2][6]
-                    |           |
-                    V           V
-    range arrivée: [0][3] -- [6][3]
-
-
-    check_diagonal_top_left_bottom_right
-
-    [5][0]
-
-    [4][0]
-    [5][1]
-
-    [3][0]
-    [4][1]
-    [5][2]
-
-    [2][0]
-    [3][1]
-    [4][2]
-    [5][3]
-
-    [1][0]
-    [2][1]
-    [3][2]
-    [4][3]
-    [5][4]
-
-    [0][0]
-    [1][1]
-    [2][2]
-    [3][3]
-    [4][4]
-    [5][5]
-
-
-    check_diagonal_bottom_left_top_right
-    lignes++
-    col++ (départ à un)
-    [0][1]
-    [1][2]
-    [2][3]
-    [3][4]
-    [4][5]
-    [5][6]
-
-    [0][2]
-    [1][3]
-    [2][4]
-    [3][5]
-    [4][6]
-    
-    etc
-
-    check_diagonal_top_right_bottom_left
-    lignes++
-    colonnes--
-
-    [5][6]
-
-    [4][6]
-    [5][5]
-
-    [3][6]
-    [4][5]
-    [5][4]
-
-    [2][6]
-    [3][5]
-    [4][4]
-    [5][3]
-
-    etc
-
-    check_diagonal_top_right_bottom_left_2
-    lignes++
-    colonnes--
-
-    [5][0]
-    [4][1]
-    [3][2]
-    [2][3]
-    [1][4]
-    [0][5]
-
-    [4][0]
-    [3][1]
-    [2][2]
-    [1][3]
-    [0][4]
-
-
-    etc
-
-    DIAGONALE HAUT-DROIT << BAS-GAUCHE
-    lignes++
-    colonnes--
-    range départ : [0][3] -- [2][6]
-                    |           |
-                    V           V
-    range arrivée: [3][0] -- [6][3]
-
-    */
+    check_etoile(tableau, &couleur_du_joueur, joueur, col);
 
     match joueur.couleur {
         Couleur::Jaune => {joueur.moins_un_jeton();},
         Couleur::Rouge => joueur.moins_un_jeton(),
     }
-    1
+    0
 }
-
-
 
 /// vérifie si on peut mettre un jeton dans la colonne. Si c'est le cas, renvoit la position du jeton ou une erreur.
 fn glisse_jeton(tableau: &[[Case;COLONNES]; LIGNES], col: usize) -> Result<usize, &'static str> {
@@ -413,114 +204,44 @@ fn glisse_jeton(tableau: &[[Case;COLONNES]; LIGNES], col: usize) -> Result<usize
         match tableau[i][col] {
         Case::Pleine(_) =>  (),
         Case::Vide => {resultat = Ok(i); return resultat;},
-    
         }
     }
-    // println!("dernier renvoi, i = {:?}", resultat);
     resultat
 }
 
 fn check_horizontal(tableau: &mut[[Case; COLONNES]; LIGNES], jeton: &Couleur) -> bool {
-
-    // for ligne in tableau.iter(){
-    //     let mut compteur: u8 = 0;
-    //     for case in ligne.iter(){
         for i in 0..LIGNES {
             let mut compteur: u8 = 0;
             for j in 0..COLONNES {
-            //     match tableau[i][j] {
-            //         Case::Pleine(Couleur::Jaune) => {
-            //             match jeton {
-            //                 Couleur::Jaune => compteur +=1,
-            //                 _ => compteur = 0,
-            //             }
-            //         }
-            //     Case::Pleine(Couleur::Rouge) => {
-            //         match jeton {
-            //             Couleur::Rouge => compteur += 1,
-            //             _ => compteur = 0,
-            //         }
-            //     }
-            //     _ => compteur = 0,
-            // }
-            match_case(tableau, jeton, i, j, &mut compteur);
-            
-            if compteur == 4 {
-                return true;
-            }
-            
+                match_case(tableau, jeton, i, j, &mut compteur);
+                if compteur == 4 {
+                    return true;
+                }   
         }
-
     }
         false
     }
 
-
-
 fn check_vertical(tableau: &mut [[Case; COLONNES];LIGNES], jeton: &Couleur, colonne: usize) -> bool { 
     let mut compteur: u8 = 0;
     for ligne in (0..LIGNES).rev() {
-        // match tableau[ligne][colonne] {
-        //     Case::Pleine(Couleur::Jaune) => {
-        //         match jeton {
-        //             Couleur::Jaune => compteur += 1,
-        //             Couleur::Rouge => compteur = 0,
-        //         }
-        //     }
-        //     Case::Pleine(Couleur::Rouge) => {
-        //         match jeton {
-        //             Couleur::Rouge => compteur += 1,
-        //             Couleur::Jaune => compteur = 0,
-        //         }
-        //     }
-        //     Case::Vide => compteur = 0,
-        // }
-        // if let 4 = compteur {
-        //     return true;
-        // }
-
-            match_case(tableau, jeton, ligne, colonne, &mut compteur);
-            
-            if compteur == 4 {
-                return true;
-            }
+        match_case(tableau, jeton, ligne, colonne, &mut compteur);
+        if compteur == 4 {
+            return true;
+        }
     }
     false
 }
-
 
 fn check_diagonal_top_left_bottom_right
 (tableau: &mut [[Case; COLONNES]; LIGNES], jeton: &Couleur) -> bool {
     for i in (0..LIGNES).rev() {
         let mut compteur: u8 = 0;
         for (j, k) in (i..LIGNES).zip(0..LIGNES - i + 1){
-        
-
-        // match tableau[j][k] {
-        //         Case::Pleine(Couleur::Jaune) => {
-        //             match jeton {
-        //                 Couleur::Jaune => compteur +=1,
-        //                 _ => compteur = 0,
-        //             }
-        //         }
-        //         Case::Pleine(Couleur::Rouge) => {
-        //             match jeton {
-        //                 Couleur::Rouge => compteur += 1,
-        //                 _ => compteur = 0,
-        //             }
-        //         }
-        //         _ => compteur = 0,
-        //     }
-        //     if let 4 = compteur {
-        //         return true;
-        //     }
-
-            match_case(tableau, jeton, j, k, &mut compteur);
-            
+            match_case(tableau, jeton, j, k, &mut compteur);     
             if compteur == 4 {
                 return true;
             }
-
         }
     }
     false
@@ -531,33 +252,10 @@ fn check_diagonal_top_left_bottom_right_2
     for i in 1..COLONNES {
         let mut compteur: u8 = 0;
         for (j, k) in (0..COLONNES - i + 1).zip(i..COLONNES){
-        
-
-        // match tableau[j][k] {
-        //         Case::Pleine(Couleur::Jaune) => {
-        //             match jeton {
-        //                 Couleur::Jaune => compteur +=1,
-        //                 _ => compteur = 0,
-        //             }
-        //         }
-        //         Case::Pleine(Couleur::Rouge) => {
-        //             match jeton {
-        //                 Couleur::Rouge => compteur += 1,
-        //                 _ => compteur = 0,
-        //             }
-        //         }
-        //         _ => compteur = 0,
-        //     }
-        //     if let 4 = compteur {
-        //         return true;
-        //     }
-
             match_case(tableau, jeton, j, k, &mut compteur);
-            
             if compteur == 4 {
                 return true;
             }
-
         }
     }
     false
@@ -568,32 +266,10 @@ fn check_diagonal_top_right_bottom_left
     for i in (0..LIGNES).rev() {
         let mut compteur: u8 = 0;
         for (j, k) in (i..LIGNES).zip((0..COLONNES).rev()){
-
-        // match tableau[j][k] {
-        //         Case::Pleine(Couleur::Jaune) => {
-        //             match jeton {
-        //                 Couleur::Jaune => compteur +=1,
-        //                 _ => compteur = 0,
-        //             }
-        //         }
-        //         Case::Pleine(Couleur::Rouge) => {
-        //             match jeton {
-        //                 Couleur::Rouge => compteur += 1,
-        //                 _ => compteur = 0,
-        //             }
-        //         }
-        //         _ => compteur = 0,
-        //     }
-        //     if let 4 = compteur {
-        //         return true;
-        //     }
-
             match_case(tableau, jeton, j, k, &mut compteur);
-            
             if compteur == 4 {
                 return true;
             }
-
         }
     }
     false
@@ -604,32 +280,10 @@ fn check_diagonal_top_right_bottom_left_2
     for i in (0..LIGNES).rev() {
         let mut compteur: u8 = 0;
         for (j, k) in (0..i + 1).rev().zip(0..COLONNES){
-        
-
-        // match tableau[j][k] {
-        //         Case::Pleine(Couleur::Jaune) => {
-        //             match jeton {
-        //                 Couleur::Jaune => compteur +=1,
-        //                 _ => compteur = 0,
-        //             }
-        //         }
-        //         Case::Pleine(Couleur::Rouge) => {
-        //             match jeton {
-        //                 Couleur::Rouge => compteur += 1,
-        //                 _ => compteur = 0,
-        //             }
-        //         }
-        //         _ => compteur = 0,
-        //     }
-        //     if let 4 = compteur {
-        //         return true;
-        //     }
-            match_case(tableau, jeton, j, k, &mut compteur);
-            
+            match_case(tableau, jeton, j, k, &mut compteur); 
             if compteur == 4 {
                 return true;
             }
-
         }
     }
     false
@@ -654,8 +308,6 @@ fn jaune_ou_rouge(participants: &Participants) -> String {
 fn match_case(tableau: &mut [[Case; COLONNES];LIGNES], jeton: &Couleur, 
     ligne: usize, col:usize, compteur: &mut u8) {
     match tableau[ligne][col] {
-        
-
         Case::Pleine(Couleur::Jaune) => {
                 match jeton {
                     Couleur::Jaune => *compteur +=1,
@@ -669,6 +321,30 @@ fn match_case(tableau: &mut [[Case; COLONNES];LIGNES], jeton: &Couleur,
             }
         }
         _ => *compteur = 0,
-
     }
+}
+
+/// Vérifie les cases adjacentes en étoile pour vérifier si quatre jetons sont identiques.
+fn check_etoile
+(tableau: &mut [[Case; 7]; 6], jeton: &Couleur, joueur: &Joueur, colonne: usize) {
+
+    if check_horizontal(tableau, jeton)
+    || check_vertical(tableau, jeton, colonne)
+    || check_diagonal_top_left_bottom_right(tableau, jeton)
+    || check_diagonal_top_left_bottom_right_2(tableau, jeton)
+    || check_diagonal_top_right_bottom_left(tableau, jeton)
+    || check_diagonal_top_right_bottom_left_2(tableau, jeton) {
+        end_game(tableau, joueur);
+    };
+}
+
+/// Affiche le tableau et quitte proprement avec std::process::exit(0)
+fn end_game(tableau: &mut [[Case; 7]; 6], joueur: &Joueur) {
+    aff_tableau(tableau);
+    println!("Victoire du joueur {} !", match joueur.couleur {
+        Couleur::Jaune => "jaune",
+        Couleur::Rouge => "rouge"
+    });
+    thread::sleep(Duration::from_secs(2));
+    std::process::exit(0);
 }
